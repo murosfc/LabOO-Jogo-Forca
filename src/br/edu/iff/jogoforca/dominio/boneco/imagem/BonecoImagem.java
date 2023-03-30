@@ -1,5 +1,9 @@
 package br.edu.iff.jogoforca.dominio.boneco.imagem;
 
-public class BonecoImagem {
+import br.edu.iff.jogoforca.dominio.boneco.Boneco;
 
+public class BonecoImagem implements Boneco{
+	private BonecoImagem soleInstance = null;
+	
+	
 }
