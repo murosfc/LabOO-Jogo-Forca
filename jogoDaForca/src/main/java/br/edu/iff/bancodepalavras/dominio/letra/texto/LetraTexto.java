@@ -1,17 +1,21 @@
-public class LetraTexto implements Letra {
-    private char codigo;
+package br.edu.iff.bancodepalavras.dominio.letra.texto;
+
+import br.edu.iff.bancodepalavras.dominio.letra.Letra;
+import java.util.Objects;
+
+public class LetraTexto extends Letra {  
 
     public LetraTexto(char codigo) {
-        this.codigo = codigo;
+        super(codigo);
     }
 
     public char getCodigo() {
-        return codigo;
+        return this.getCodigo();
     }
 
     @Override
     public void exibir(Object contexto) {
-        System.out.print(codigo);
+        System.out.print(this.getCodigo());
     }
 
     @Override
@@ -19,16 +23,16 @@ public class LetraTexto implements Letra {
         if (this == o) return true;
         if (!(o instanceof LetraTexto)) return false;
         LetraTexto letraTexto = (LetraTexto) o;
-        return codigo == letraTexto.codigo;
+        return letraTexto.getCodigo() == this.getCodigo();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codigo);
+        return Objects.hash(this.getCodigo());
     }
 
     @Override
     public String toString() {
-        return String.valueOf(codigo);
+        return String.valueOf(this.getCodigo());
     }
 }

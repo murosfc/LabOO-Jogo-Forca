@@ -1,29 +1,28 @@
 package br.edu.iff.bancodepalavras.dominio.letra;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class LetraFactoryImpl implements LetraFactory {
-
-    // Método template que define o fluxo de criação de uma letra
-    protected final Letra getLetra(char codigo) {
-        Letra letra = null;
-        if (codigo == '_') {
-            letra = getLetraEncoberta();
-        } else {
-            letra = criarLetra(codigo);
-        }
-        return letra;
-    }
+    private List<Letra> pool;
+    private Letra encoberta;
     
-    // Método abstrato que deve ser implementado pelas classes filhas
-    protected abstract Letra criarLetra(char codigo);
+    protected LetraFactoryImpl(){ 
+        pool = new ArrayList<>(26);
+    } 
+    
+    @Override
+    public final Letra getLetra(char codigo){
+        return criarLetra(codigo);
+    }    
 
-    // Método que retorna uma instância de LetraEncoberta
+    @Override
     public final Letra getLetraEncoberta() {
-        return LetraEncoberta.getInstance();
+        return encoberta;
     }
 
-    // Método que retorna uma instância de Letra
-    public final Letra getLetra(char codigo) {
-        return getLetra(codigo);
-    }
+    protected abstract Letra criarLetra(char codigo);
+    
+    
 
 }

@@ -1,11 +1,15 @@
+package br.edu.iff.bancodepalavras.dominio.palavra;
+
+import br.edu.iff.bancodepalavras.dominio.tema.Tema;
+import br.edu.iff.factory.EntityFactory;
+import br.edu.iff.repository.RepositoryException;
+
 public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory {
 
-    private static PalavraFactoryImpl soleInstance;
-
-    private final PalavraRepository repository;
+    private static PalavraFactoryImpl soleInstance;    
 
     private PalavraFactoryImpl(PalavraRepository repository) {
-        this.repository = repository;
+        super(repository);        
     }
 
     public static void createSoleInstance(PalavraRepository repository) {
@@ -19,7 +23,7 @@ public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory 
     }
 
     private PalavraRepository getPalavraRepository() {
-        return repository;
+        return (PalavraRepository) this.getRepository();
     }
 
     public Palavra getPalavra(String palavra, Tema tema) {

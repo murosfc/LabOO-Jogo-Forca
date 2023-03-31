@@ -1,10 +1,12 @@
 package br.edu.iff.bancodepalavras.dominio.letra;
 
+import java.util.Objects;
+
 public abstract class Letra {
 
     private char codigo;
 
-    public Letra(char codigo) {
+    protected Letra(char codigo) {
         this.codigo = codigo;
     }
 

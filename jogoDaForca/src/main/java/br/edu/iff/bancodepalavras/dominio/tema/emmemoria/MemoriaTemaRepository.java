@@ -1,3 +1,10 @@
+package br.edu.iff.bancodepalavras.dominio.tema.emmemoria;
+
+import br.edu.iff.bancodepalavras.dominio.tema.Tema;
+import br.edu.iff.bancodepalavras.dominio.tema.TemaRepository;
+import br.edu.iff.repository.RepositoryException;
+import java.util.List;
+
 public class MemoriaTemaRepository implements TemaRepository {
     private static MemoriaTemaRepository soleInstance = null;
 
@@ -13,18 +20,19 @@ public class MemoriaTemaRepository implements TemaRepository {
     }
 
     // implementação dos métodos da interface TemaRepository
+   
     @Override
-    public Tema getPorId(long id) {
+    public List<Tema> getPorNome(String nome) {
         // implementação
+    }
+    
+     @Override
+    public Tema getPorId(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Tema[] getPorNome(String nome) {
-        // implementação
-    }
-
-    @Override
-    public Tema[] getTodos() {
+    public List<Tema> getTodos() {
         // implementação
     }
 
@@ -42,4 +50,6 @@ public class MemoriaTemaRepository implements TemaRepository {
     public void remover(Tema tema) throws RepositoryException {
         // implementação
     }
+
+   
 }

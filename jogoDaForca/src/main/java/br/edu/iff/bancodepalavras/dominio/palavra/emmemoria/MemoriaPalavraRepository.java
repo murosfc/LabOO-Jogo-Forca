@@ -1,3 +1,11 @@
+package br.edu.iff.bancodepalavras.dominio.palavra.emmemoria;
+
+import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
+import br.edu.iff.bancodepalavras.dominio.palavra.PalavraRepository;
+import br.edu.iff.bancodepalavras.dominio.tema.Tema;
+import br.edu.iff.repository.RepositoryException;
+import java.util.List;
+
 public class MemoriaPalavraRepository implements PalavraRepository {
     
     private static MemoriaPalavraRepository soleInstance = new MemoriaPalavraRepository();
@@ -7,42 +15,47 @@ public class MemoriaPalavraRepository implements PalavraRepository {
     public static MemoriaPalavraRepository getSoleInstance() {
         return soleInstance;
     }
-    
-    // implementação dos métodos da interface PalavraRepository
-    
+
     @Override
-    public Palavra getPorId(long id) {
-        // implementação do método
+    public Palavra getPorId(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
-    public Palavra[] getPorTema(Tema tema) {
-        // implementação do método
+    public List<Palavra> getPorTema(Tema tema) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
-    public Palavra[] getTodas() {
-        // implementação do método
+    public List<Palavra> getTodas() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public Palavra getPalavra(String palavra) {
-        // implementação do método
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void inserir(Palavra palavra) throws RepositoryException {
-        // implementação do método
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void atualizar(Palavra palavra) throws RepositoryException {
-        // implementação do método
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void remover(Palavra palavra) throws RepositoryException {
-        // implementação do método
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public Long getProximoId() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+   
     
 }

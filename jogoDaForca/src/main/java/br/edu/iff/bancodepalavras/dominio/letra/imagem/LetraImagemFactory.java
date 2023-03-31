@@ -16,4 +16,9 @@ public class LetraImagemFactory extends LetraFactoryImpl {
     protected Letra criarLetra(char codigo) {
         return null;
     }
+
+    @Override
+    public Letra criar(char charAt) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

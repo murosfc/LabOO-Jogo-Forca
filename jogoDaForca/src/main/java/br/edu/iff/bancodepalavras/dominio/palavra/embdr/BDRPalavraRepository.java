@@ -1,3 +1,11 @@
+package br.edu.iff.bancodepalavras.dominio.palavra.embdr;
+
+import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
+import br.edu.iff.bancodepalavras.dominio.palavra.PalavraRepository;
+import br.edu.iff.bancodepalavras.dominio.tema.Tema;
+import br.edu.iff.repository.RepositoryException;
+import java.util.List;
+
 public class BDRPalavraRepository implements PalavraRepository {
 
     private static BDRPalavraRepository soleInstance = null;
@@ -14,41 +22,44 @@ public class BDRPalavraRepository implements PalavraRepository {
     }
 
     @Override
-    public Palavra getPorId(long id) {
-        // implementação para obter uma palavra pelo ID a partir do Banco de Dados Relacional
-        return null;
+    public Palavra getPorId(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Palavra[] getPorTema(Tema tema) {
-        // implementação para obter as palavras de um tema a partir do Banco de Dados Relacional
-        return null;
+    public List<Palavra> getPorTema(Tema tema) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Palavra[] getTodas() {
-        // implementação para obter todas as palavras do Banco de Dados Relacional
-        return null;
+    public List<Palavra> getTodas() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public Palavra getPalavra(String palavra) {
-        // implementação para obter uma palavra a partir do Banco de Dados Relacional
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void inserir(Palavra palavra) throws RepositoryException {
-        // implementação para inserir uma palavra no Banco de Dados Relacional
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void atualizar(Palavra palavra) throws RepositoryException {
-        // implementação para atualizar uma palavra no Banco de Dados Relacional
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void remover(Palavra palavra) throws RepositoryException {
-        // implementação para remover uma palavra do Banco de Dados Relacional
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public Long getProximoId() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+  
 }

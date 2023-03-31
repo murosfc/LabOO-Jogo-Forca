@@ -1,5 +1,5 @@
 package br.edu.iff.repository;
 
 public interface Repository {
-    long getProximoId();
+    public Long getProximoId();
 }

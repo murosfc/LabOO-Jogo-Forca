@@ -13,7 +13,7 @@ public abstract class EntityFactory {
         return this.repository;
     }
     
-    protected long getProximoId() {
+    protected Long getProximoId() {
         return this.repository.getProximoId();
     }
 }

@@ -1,13 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package br.edu.iff.jogoforca;
 
-/**
- *
- * @author dedy_
- */
+import br.edu.iff.bancodepalavras.dominio.palavra.PalavraRepository;
+import br.edu.iff.bancodepalavras.dominio.tema.TemaRepository;
+import br.edu.iff.jogoforca.dominio.jogador.JogadorRepository;
+import br.edu.iff.jogoforca.dominio.rodada.RodadaRepository;
+
 public interface RepositoryFactory {
+    
+    public PalavraRepository getPalavraRepository();
+    
+    public TemaRepository getTemaRepository();
+    
+    public RodadaRepository getRodadaRepository();
+    
+    public JogadorRepository getJogadorRepository();
     
 }

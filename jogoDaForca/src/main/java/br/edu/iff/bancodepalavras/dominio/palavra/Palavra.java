@@ -1,17 +1,26 @@
+package br.edu.iff.bancodepalavras.dominio.palavra;
+
+import br.edu.iff.bancodepalavras.dominio.letra.Letra;
+import br.edu.iff.bancodepalavras.dominio.letra.LetraFactory;
+import br.edu.iff.bancodepalavras.dominio.tema.Tema;
+import br.edu.iff.dominio.ObjetoDominioImpl;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Palavra extends ObjetoDominioImpl {
 
     private LetraFactory letraFactory;
-    private Letra[] letras;
+    private List<Letra> letras;
     private Tema tema;
 
     public Palavra(long id, String palavra, Tema tema) {
         super(id);
         this.letraFactory = null;
-        this.letras = new Letra[palavra.length()];
+        this.letras = new ArrayList<>();
         this.tema = tema;
 
         for (int i = 0; i < palavra.length(); i++) {
-            this.letras[i] = letraFactory.criar(palavra.charAt(i));
+            this.letras.set(i, letraFactory.criar(palavra.charAt(i)));
         }
     }
 
@@ -29,8 +38,8 @@ public class Palavra extends ObjetoDominioImpl {
 
     public void setLetraFactory(LetraFactory factory) {
         this.letraFactory = factory;
-        for (int i = 0; i < letras.length; i++) {
-            this.letras[i].setLetraFactory(factory);
+        for (int i = 0; i < letras.size(); i++) {
+            this.letras.get(i).setLetraFactory(factory);
         }
     }
 
@@ -38,12 +47,12 @@ public class Palavra extends ObjetoDominioImpl {
         return this.letraFactory;
     }
 
-    public Letra[] getLetras() {
+    public List<Letra> getLetras() {
         return this.letras;
     }
 
     public Letra getLetra(int posicao) {
-        return this.letras[posicao];
+        return this.letras.get(posicao);
     }
 
     public void exibir(Object contexto) {
@@ -67,7 +76,7 @@ public class Palavra extends ObjetoDominioImpl {
     }
 
     public int getTamanho() {
-        return this.letras.length;
+        return this.letras.size();
     }
 
     @Override
