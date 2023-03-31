@@ -1,3 +1,5 @@
+package br.edu.iff.bancodepalavras.dominio.tema;
+
 public class Tema {
     private String nome;
 
@@ -10,7 +12,6 @@ public class Tema {
     }
     
     private Tema(long id, String nome) {
-        super(id);
         this.nome = nome;
     }
     

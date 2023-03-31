@@ -1,3 +1,5 @@
+package br.edu.iff.dominio;
+
 public abstract class ObjetoDominioImpl implements ObjetoDominio {
     private long id;
 
