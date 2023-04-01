@@ -49,9 +49,9 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl{
     }
         
         return rodada;
-    }
+    }    
     
-    public void createSoleInstance(RodadaRepository rodadaRepository, TemaRepository temaRepository, PalavraRepository palavraRepository) {
+    public static void createSoleInstance(RodadaRepository rodadaRepository, TemaRepository temaRepository, PalavraRepository palavraRepository) {
         soleInstance = new RodadaSorteioFactory(rodadaRepository, temaRepository, palavraRepository);
     }    
 
@@ -64,10 +64,5 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl{
             throw new RuntimeException("Necessária a inicialização da fábrica de sorteio");
         }
         return soleInstance;
-    }
-
-    
-    
-   
-    
+    }     
 }

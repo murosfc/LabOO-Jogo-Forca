@@ -9,13 +9,13 @@ import java.util.List;
 
 public class Palavra extends ObjetoDominioImpl {
 
-    private LetraFactory letraFactory;
+    private static LetraFactory letraFactory;
     private List<Letra> letras;
     private Tema tema;
 
     public Palavra(long id, String palavra, Tema tema) {
         super(id);
-        this.letraFactory = null;
+        letraFactory = null;
         this.letras = new ArrayList<>();
         this.tema = tema;
 
@@ -36,15 +36,12 @@ public class Palavra extends ObjetoDominioImpl {
         return p;
     }
 
-    public void setLetraFactory(LetraFactory factory) {
-        this.letraFactory = factory;
-        for (int i = 0; i < letras.size(); i++) {
-            this.letras.get(i).setLetraFactory(factory);
-        }
+    public static void setLetraFactory(LetraFactory factory) {
+        letraFactory = factory;        
     }
 
-    public LetraFactory getLetraFactory() {
-        return this.letraFactory;
+    public static LetraFactory getLetraFactory() {
+        return letraFactory;
     }
 
     public List<Letra> getLetras() {
@@ -59,7 +56,7 @@ public class Palavra extends ObjetoDominioImpl {
         // Implementação do método exibir
     }
 
-    public void exibir(Object contexto, boolean[] posicoes) {
+    public void exibir(Object contexto, List<Boolean> posicoes) {
         // Implementação do método exibir com posicoes
     }
 
@@ -72,7 +69,13 @@ public class Palavra extends ObjetoDominioImpl {
     }
 
     public boolean comparar(String palavra) {
-        // Implementação do método comparar
+        if (palavra.length() != this.getTamanho())
+            return false;
+        for(int i=0 ; i < this.getTamanho(); i++){
+            if (palavra.charAt(i) != this.letras.get(i).getCodigo())
+                return false;
+        }
+        return true;
     }
 
     public int getTamanho() {

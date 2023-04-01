@@ -3,7 +3,6 @@ package br.edu.iff.bancodepalavras.dominio.palavra;
 import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.bancodepalavras.dominio.tema.TemaRepository;
 import br.edu.iff.repository.RepositoryException;
-import java.util.Arrays;
 
 public class PalavraAppService {
     private static PalavraAppService soleInstance;

@@ -22,7 +22,4 @@ public abstract class LetraFactoryImpl implements LetraFactory {
     }
 
     protected abstract Letra criarLetra(char codigo);
-    
-    
-
 }
