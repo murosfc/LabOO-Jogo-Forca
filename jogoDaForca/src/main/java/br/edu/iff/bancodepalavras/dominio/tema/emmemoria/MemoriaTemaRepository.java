@@ -19,7 +19,16 @@ public class MemoriaTemaRepository implements TemaRepository {
         return soleInstance == null ? soleInstance = new MemoriaTemaRepository() : soleInstance;
     }
     // implementação dos métodos da interface TemaRepository
-
+    
+    @Override
+    public Tema getPorId(Long id) {      
+        for (Tema tema : pool){
+            if(tema.getId() == id)
+                return tema;
+        }
+        return null; 
+    }
+    
     @Override
     public List<Tema> getPorNome(String nome) {
         List<Tema> temaBuscado = new ArrayList<>();
@@ -28,15 +37,6 @@ public class MemoriaTemaRepository implements TemaRepository {
                 temaBuscado.add(tema);
         }
         return temaBuscado;
-    }
-
-    @Override
-    public Tema getPorId(Long id) {      
-        for (Tema tema : pool){
-            if(tema.getId() == id)
-                return tema;
-        }
-        return null; 
     }
 
     @Override

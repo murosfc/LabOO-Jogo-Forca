@@ -12,6 +12,29 @@ public class Palavra extends ObjetoDominioImpl {
     private static LetraFactory letraFactory;
     private List<Letra> letras;
     private Tema pertence;
+    
+    
+    public static void setLetraFactory(LetraFactory factory) {
+        letraFactory = factory;        
+    }
+    
+    public static LetraFactory getLetraFactory() {
+        return letraFactory;
+    }
+    
+    public static Palavra criar(Long id, String palavra, Tema tema) {
+        if(getLetraFactory() == null){
+            throw new RuntimeException("Letra factory não configurada");
+        }
+        return new Palavra (id, palavra, tema);
+    }
+    
+    public static Palavra reconstituir(Long id, String palavra, Tema tema) {
+        if(getLetraFactory() == null){
+            throw new RuntimeException("Letra factory não configurada");
+        }
+        return new Palavra (id, palavra, tema);
+    }
 
     public Palavra(long id, String palavra, Tema tema) {
         super(id);          
@@ -21,29 +44,7 @@ public class Palavra extends ObjetoDominioImpl {
             this.letras.set(i, letraFactory.criar(palavra.charAt(i)));
         }
     }
-
-    public static Palavra criar(Long id, String palavra, Tema tema) {
-        if(getLetraFactory() == null){
-            throw new RuntimeException("Letra factory não configurada");
-        }
-        return new Palavra (id, palavra, tema);
-    }
-
-    public static Palavra reconstituir(Long id, String palavra, Tema tema) {
-        if(getLetraFactory() == null){
-            throw new RuntimeException("Letra factory não configurada");
-        }
-        return new Palavra (id, palavra, tema);
-    }
-
-    public static void setLetraFactory(LetraFactory factory) {
-        letraFactory = factory;        
-    }
-
-    public static LetraFactory getLetraFactory() {
-        return letraFactory;
-    }
-
+    
     public List<Letra> getLetras() {
         return this.letras;
     }
