@@ -13,23 +13,20 @@ public class BDRTemaRepository implements TemaRepository {
     }
     
     public static synchronized BDRTemaRepository getSoleInstance() {
-        if (soleInstance == null) {
-            soleInstance = new BDRTemaRepository();
-        }
-        return soleInstance;
+        return soleInstance == null ? soleInstance = new BDRTemaRepository() : soleInstance;       
     }
     
-     @Override
+    @Override
     public Tema getPorId(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return null; // implementação da busca por nome em um banco de dados relacional
     }
     
     public List<Tema> getPorNome(String nome) {
-        // implementação da busca por nome em um banco de dados relacional
+        return null; // implementação da busca por nome em um banco de dados relacional
     }
     
     public List<Tema> getTodos() {
-        // implementação da busca de todos os temas em um banco de dados relacional
+        return null;  //implementação da busca de todos os temas em um banco de dados relacional
     }
     
     public void inserir(Tema tema) throws RepositoryException {
@@ -42,6 +39,11 @@ public class BDRTemaRepository implements TemaRepository {
     
     public void remover(Tema tema) throws RepositoryException {
         // implementação da remoção de um tema em um banco de dados relacional
+    }
+
+    @Override
+    public Long getProximoId() {
+        return 0L;
     }
 
    

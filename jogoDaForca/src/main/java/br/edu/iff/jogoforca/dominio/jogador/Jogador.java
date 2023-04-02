@@ -7,11 +7,11 @@ public class Jogador extends ObjetoDominioImpl {
     private int pontuacao = 0;
 
     public static Jogador criar(Long id,String nome){
-        return ; //para fazer
+        return new Jogador (id, nome);
     }
 
     public static Jogador reconstruir(Long id, String nome, int pontuacao){
-        return Jogador; //para fazer
+        return new Jogador (id, nome, pontuacao);
     }
 
     private Jogador(Long id,String nome) {

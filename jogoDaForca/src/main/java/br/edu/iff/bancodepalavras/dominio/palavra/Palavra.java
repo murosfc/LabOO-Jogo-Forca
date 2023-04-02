@@ -11,29 +11,29 @@ public class Palavra extends ObjetoDominioImpl {
 
     private static LetraFactory letraFactory;
     private List<Letra> letras;
-    private Tema tema;
+    private Tema pertence;
 
     public Palavra(long id, String palavra, Tema tema) {
-        super(id);
-        letraFactory = null;
+        super(id);          
         this.letras = new ArrayList<>();
-        this.tema = tema;
-
+        this.pertence = tema;
         for (int i = 0; i < palavra.length(); i++) {
             this.letras.set(i, letraFactory.criar(palavra.charAt(i)));
         }
     }
 
-    public static Palavra criar(long id, String palavra, Tema tema, LetraFactory letraFactory) {
-        Palavra p = new Palavra(id, palavra, tema);
-        p.setLetraFactory(letraFactory);
-        return p;
+    public static Palavra criar(Long id, String palavra, Tema tema) {
+        if(getLetraFactory() == null){
+            throw new RuntimeException("Letra factory não configurada");
+        }
+        return new Palavra (id, palavra, tema);
     }
 
-    public static Palavra reconstituir(long id, String palavra, Tema tema, LetraFactory letraFactory) {
-        Palavra p = new Palavra(id, palavra, tema);
-        p.setLetraFactory(letraFactory);
-        return p;
+    public static Palavra reconstituir(Long id, String palavra, Tema tema) {
+        if(getLetraFactory() == null){
+            throw new RuntimeException("Letra factory não configurada");
+        }
+        return new Palavra (id, palavra, tema);
     }
 
     public static void setLetraFactory(LetraFactory factory) {
@@ -53,19 +53,34 @@ public class Palavra extends ObjetoDominioImpl {
     }
 
     public void exibir(Object contexto) {
-        // Implementação do método exibir
+        for(Letra letra: this.letras){
+            letra.exibir(contexto);
+        }
     }
 
     public void exibir(Object contexto, List<Boolean> posicoes) {
-        // Implementação do método exibir com posicoes
+        int i=0;
+        for(boolean bol : posicoes){
+            if(bol){
+                this.letras.get(i).exibir(contexto);
+            }
+            i++;
+        }
     }
 
-    public int[] tentar(char codigo) {
-        // Implementação do método tentar
+    public List<Integer> tentar(char codigo) {
+        List<Integer> posicoesCertas = new ArrayList<>();
+        int i = 0;
+        for (Letra letra : this.letras){
+            if (letra.equals(letraFactory.criar(codigo)))
+                posicoesCertas.add(i);
+            i++;
+        }
+        return posicoesCertas;
     }
 
     public Tema getTema() {
-        return this.tema;
+        return this.pertence;
     }
 
     public boolean comparar(String palavra) {
@@ -84,6 +99,9 @@ public class Palavra extends ObjetoDominioImpl {
 
     @Override
     public String toString() {
-        // Implementação do método toString
+        String palavra = "";
+        for (Letra letra: letras)
+            palavra += letra.getCodigo();        
+        return palavra;
     }
 }

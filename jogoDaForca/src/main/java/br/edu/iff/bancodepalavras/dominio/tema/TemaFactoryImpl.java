@@ -1,11 +1,12 @@
 package br.edu.iff.bancodepalavras.dominio.tema;
 
-public class TemaFactoryImpl implements TemaFactory {
-    private static TemaFactoryImpl soleInstance;
-    private TemaRepository repository;
+import br.edu.iff.factory.EntityFactory;
+
+public class TemaFactoryImpl extends EntityFactory implements TemaFactory{
+    private static TemaFactoryImpl soleInstance;    
 
     private TemaFactoryImpl(TemaRepository repository) {
-        this.repository = repository;
+        super(repository);
     }
 
     public static void createSoleInstance(TemaRepository repository) {
@@ -15,19 +16,20 @@ public class TemaFactoryImpl implements TemaFactory {
     }
 
     public static TemaFactoryImpl getSoleInstance() {
+        if (soleInstance == null){
+            throw new RuntimeException("A Tema Factory Implementation ainda não foi iniciada");
+        }
         return soleInstance;
     }
 
+    @Override
     public Tema getTema(String nome) {
-        Tema tema = repository.getPorNome(nome);
-        if (tema == null) {
-            long id = EntityFactory.getProximoId();
-            tema = new Tema(id, nome);
-        }
-        return tema;
+        return Tema.criar(getProximoId(), nome);
+    }
+    
+    private TemaRepository getTemaRepository(){
+        return (TemaRepository) this.getRepository();
     }
 
-    private TemaRepository getTemaRepository() {
-        return repository;
-    }
+    
 }
