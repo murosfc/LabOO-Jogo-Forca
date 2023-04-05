@@ -2,11 +2,16 @@ package br.edu.iff.bancodepalavras.dominio.letra.texto;
 
 import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.letra.LetraFactoryImpl;
-import br.edu.iff.bancodepalavras.dominio.letra.imagem.LetraImagemFactory;
+import java.util.HashMap;
+
 
 public class LetraTextoFactory extends LetraFactoryImpl {
 
     private static LetraTextoFactory soleInstance;
+
+    HashMap<Integer,Character> pool = new HashMap<Integer,Character>();
+
+    pool.
 
     public static synchronized LetraTextoFactory getSoleInstance() {
         if (soleInstance == null)
@@ -16,7 +21,13 @@ public class LetraTextoFactory extends LetraFactoryImpl {
     }
     @Override
     protected Letra criarLetra(char codigo) {
-        return null;
+        int i = codigo;
+        Letra result = this.pool.get();
+        if (result == null){
+            result = this.criarLetra(codigo);
+            this.pool.set( i, result);
+        }
+        return result;
     }
 
     @Override
