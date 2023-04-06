@@ -114,7 +114,7 @@ public class Rodada extends ObjetoDominioImpl {
                 }
             }
             if (errada) {
-                this.erradas.add(Palavra.getLetraFactory().criar(codigo));
+                this.erradas.add(Palavra.getLetraFactory().getLetra(codigo));
             }
         }
         if (this.encerrou())

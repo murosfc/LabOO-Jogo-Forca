@@ -29,7 +29,7 @@ public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory 
     }
  
     public Palavra getPalavra(String palavra, Tema tema) {
-        long id = getPalavraRepository().getProximoId();
+        long id = getPalavraRepository().getProximoId();        
         Palavra p = new Palavra(id, palavra, tema);
         try {
             getPalavraRepository().inserir(p);

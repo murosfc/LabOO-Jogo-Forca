@@ -2,6 +2,7 @@ package br.edu.iff.bancodepalavras.dominio.palavra;
 
 import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.letra.LetraFactory;
+import br.edu.iff.bancodepalavras.dominio.letra.LetraFactoryImpl;
 import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.dominio.ObjetoDominioImpl;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class Palavra extends ObjetoDominioImpl {
         this.letras = new ArrayList<>();
         this.pertence = tema;
         for (int i = 0; i < palavra.length(); i++) {
-            this.letras.set(i, letraFactory.criar(palavra.charAt(i)));
+            this.letras.add(i, letraFactory.getLetra(palavra.charAt(i)));
         }
     }
     
@@ -73,7 +74,7 @@ public class Palavra extends ObjetoDominioImpl {
         List<Integer> posicoesCertas = new ArrayList<>();
         int i = 0;
         for (Letra letra : this.letras){
-            if (letra.equals(letraFactory.criar(codigo)))
+            if (letra.equals(letraFactory.getLetra(codigo)))
                 posicoesCertas.add(i);
             i++;
         }

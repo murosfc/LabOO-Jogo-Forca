@@ -21,6 +21,7 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl{
         Random random = new Random();
         
         List<Tema> temasDisponíveis = getTemaRepository().getTodos();
+        System.out.println("TAMANHO TEMAS" + temasDisponíveis.size());
         Tema temaSorteado = temasDisponíveis.get(random.nextInt(temasDisponíveis.size()));
         
         int quantidadeDePalavras = random.nextInt(Rodada.getMaxPalavras() + 1);

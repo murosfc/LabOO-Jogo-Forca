@@ -1,25 +1,31 @@
 package br.edu.iff.jogoforca.dominio.jogador;
 
-public class JogadorFactoryImpl implements JogadorFactory{
+import br.edu.iff.factory.EntityFactory;
+import br.edu.iff.repository.Repository;
 
-    private static JogadorFactoryImpl soleInstance;
-    private final JogadorRepository repository;
+public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory{
 
+    private static JogadorFactoryImpl soleInstance;    
+    
     private JogadorFactoryImpl(JogadorRepository repository) {
-        this.repository = repository;
-    }
+        super(repository);        
+    }    
 
     public static void createSoleInstance(JogadorRepository repository){
         if (soleInstance == null)
             soleInstance = new JogadorFactoryImpl(repository);
     }
 
-    public static synchronized JogadorFactoryImpl getSoleInstance() {
+    public static JogadorFactoryImpl getSoleInstance() {
         return soleInstance;
+    }
+
+    public JogadorFactoryImpl(Repository repository) {
+        super(repository);
     }
 
     @Override
     public Jogador getJogador(String nome) {
-        return repository.getPorNome(nome);
+        return Jogador.criar(getProximoId(), nome);
     }
 }

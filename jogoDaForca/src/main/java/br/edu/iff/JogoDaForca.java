@@ -17,148 +17,147 @@ import java.util.Scanner;
 
 public class JogoDaForca {
 
-    private final static List<String> palavrasTemaComida = Arrays.asList("Pão", "Pizza", "Maçã", "Lasanha", "Sushi");
-    private final static List<String> plavrasTemaPais = Arrays.asList("Brasil", "França", "Austrália", "China", "Japão", "México", "Canadá");
+    private final static List<String> palavrasTemaComida = Arrays.asList("Pera", "Pizza", "Arroz", "Lasanha", "Sushi");
+    private final static List<String> palavrasTemaPais = Arrays.asList("Brasil", "Portugal", "Austria", "China", "Argentina", "Russia", "Gana");
 
     private final static Aplicacao app = Aplicacao.getSoleInstance();
     private final static JogadorFactory jogadorFactory = app.getJogadorFactory();
     private final static RodadaFactory rodadaFactory = app.getRodadaFactory();
     private final static TemaFactory temaFactory = app.getTemaFactory();
-    private final static PalavraFactory palavraFactory = app.getPalavraFactory();
-    
-    private static Jogador jogador;
+    private final static PalavraFactory palavraFactory = app.getPalavraFactory();    
+
+    private static Jogador jogador;   
 
     public static void main(String[] args) {
-        while (true){
+       
+        while (true) {
             iniciarPalavrasETemas();
-            if (telaInicial()){           
+            if (telaInicial()) {
                 telaJogo(jogador, rodadaFactory.getRodada(jogador));
-            }else {
+            } else {
+                telaFimDeJogo();
                 return;
             }
         }
     }
-    
-    static void telaFimDeJogo(){
-        try{
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        }catch (Exception e){
-            System.err.println("Erro ao tentar limpar tela: "+e.getMessage());
-        } 
-        System.out.println("Obrigado por ter jogado o jogo da forca");
-        System.out.println("Implementado por Bruno , Felipe Muros e Rafael Panisset");         
+
+
+    static void telaFimDeJogo() {        
+        System.out.println("\n\nObrigado por ter jogado o jogo da forca");
+        System.out.println("Implementado por Bruno , Felipe Muros e Rafael Panisset");
         System.out.println("Desenhado e supervisionado pelo professor Mark Douglas");
         System.out.println("Curso Bacharel em Sistemas de Informação");
         System.out.println("Instituto Federal Fluminense, campus Centro - Campos dos Goytacazes - RJ");
-        System.out.println("2023");
+        System.out.println("Abril de 2023\n\n");
     }
-    
-    static void telaJogo(Jogador jogador, Rodada rodada){
-        while (!rodada.encerrou()){
+
+    static void telaJogo(Jogador jogador, Rodada rodada) {
+        while (!rodada.encerrou()) {
             System.out.println("\nOlá " + jogador.getNome());
             System.out.println("O tema da rodada é: " + rodada.getTema().getNome());
-            
+            System.out.println("Considere letras sem acento, e sem caracteres exclusivos do português do Brasil");
+
             System.out.print("Letras já arriscadas: ");
             int i = 0;
             for (Letra tentativa : rodada.getTentativas()) {
-              tentativa.exibir(null);
-              i++;
-              if(i < rodada.getTentativas().size())
-                System.out.println(" - ");              
+                tentativa.exibir(null);
+                i++;
+                if (i < rodada.getTentativas().size()) {
+                    System.out.println(" - ");
+                }
             }
-            
+
             System.out.println("Palavras da rodada:");
             rodada.exibirItens(null);
             System.out.println();
             System.out.println("Tentativa: " + rodada.getQuantidadeErros() + " de " + Rodada.getMaxErros());
             System.out.println("\nForca: ");
             rodada.exibirBoneco(null);
-            
-           String opcao = "0";
-           Scanner scanner = new Scanner(System.in);
-           while (!opcao.equals("1") || !opcao.equals("2")){
+
+            String opcao = "0";
+            Scanner scanner = new Scanner(System.in);
+            while (!opcao.equals("1") || !opcao.equals("2")) {
                 System.out.println("Escolha sua próxima ação?");
                 System.out.println("(1) Digitar uma letra");
                 System.out.println("(2) Já sabe todas as palavras? Arriscar");
                 opcao = scanner.next();
-           }
-           
-           switch (opcao){
-               case "1":
+            }
+
+            switch (opcao) {
+                case "1":
                     char codigo = "#".charAt(0);
-                    while (codigo < 'a' || codigo > 'z') { //garante atendimento do contrato
+                    while (!Character.isLetter(codigo)) { //garante atendimento do contrato
                         System.out.print("Digite a letra do seu palpite: ");
                         codigo = scanner.next().charAt(0);
-                        if (codigo >= 'A' && codigo <= 'Z') { //Se a letra é maiúscula, converte para minuscula somando 32
+                        if (codigo >= 'A' && codigo <= 'Z' || codigo >= 'À' && codigo <= 'Ý') { //Se a letra é maiúscula, converte para minuscula somando 32
                             codigo = (char) (codigo + 32);
                         }
                     }
                     scanner.close();
                     rodada.tentar(codigo);
                     break;
-               case "2":
-                   List<Palavra> palavras = new ArrayList<>();
+                case "2":
+                    List<Palavra> palavras = new ArrayList<>();
                     for (i = 1; i <= rodada.getNumPalavras(); i++) {
-                      System.out.println("Digite a palavra numero " + i);
-                      String palavra = scanner.next();
-                      palavras.add(palavraFactory.getPalavra(palavra, rodada.getTema()));
+                        System.out.println("Digite a palavra numero " + i);
+                        String palavra = scanner.next();
+                        palavras.add(palavraFactory.getPalavra(palavra, rodada.getTema()));
                     }
                     rodada.arriscar(palavras);
                     break;
-               default: 
-                   System.err.println("Opção inválida");
-           }
-           encerrou(rodada);     
+                default:
+                    System.err.println("Opção inválida");
+            }
+            encerrou(rodada);
         }
     }
-    
-    static void encerrou(Rodada rodada){
+
+    static void encerrou(Rodada rodada) {
         if (rodada.descobriu()) {
             System.out.println("Parabéns, você descobriu todas as palavras!");
             rodada.exibirPalavras(null);
-          } else {
+        } else {
             System.out.println("Poxa. Que pena! Você não acertou todas as palavras");
-          }
-          System.out.println("Sua pontuação nessa rodada foi: " + rodada.calcularPontos());
-          System.out.println("Sua pontuação total é: " + jogador.getPontuacao());
-          Scanner scanner = new Scanner(System.in);
-          System.out.println("\nPressione enter para continuar");
-          scanner.next().charAt(0);
-          scanner.close();  
+        }
+        System.out.println("Sua pontuação nessa rodada foi: " + rodada.calcularPontos());
+        System.out.println("Sua pontuação total é: " + jogador.getPontuacao());
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nPressione enter para continuar");
+        scanner.next().charAt(0);
+        scanner.close();
     }
 
     static void iniciarPalavrasETemas() {
-        Tema comida = temaFactory.getTema("comida");
-        Tema pais = temaFactory.getTema("país");
+        Tema comida = temaFactory.getTema("comida");        
+        Tema pais = temaFactory.getTema("país");        
+        //PRECISA INSERIR TEMAS NA MEMORIA
+        
         for (String palavra : palavrasTemaComida) {
             palavraFactory.getPalavra(palavra, comida);
         }
-        for (String palavra : plavrasTemaPais) {
+        for (String palavra : palavrasTemaPais) {
             palavraFactory.getPalavra(palavra, pais);
         }
     }
-    
-    static boolean telaInicial(){
-      Scanner scanner = new Scanner(System.in);
-      String opcao = "2";
-      while (!opcao.equals("0") || !opcao.equals("1")){
-        try{
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        }catch (Exception e){
-            System.err.println("Erro ao tentar limpar tela: "+e.getMessage());
-        }        
-        System.out.println("-------------------------------");
-        System.out.println("|        JOGO DA FORCA        |");
-        System.out.println("-------------------------------");
-        System.out.println("\nESCOLHA UMA DAS OPÇÕES ABAIXO:\n");
-        System.out.println("(1) Novo Jogo ");
-        System.out.println("(0) Sair "); 
-        opcao = scanner.next();
-      }
-      System.out.println("Digite seu nome: ");
-      String nome = scanner.next();
-      scanner.close();
-      jogadorFactory.getJogador(nome);
-      return opcao.equals("1");
+
+    static boolean telaInicial() {
+        Scanner scanner = new Scanner(System.in);
+        int opcao = 2;
+        while (opcao != 0 && opcao != 1) {           
+            System.out.println("\n-------------------------------");
+            System.out.println("|        JOGO DA FORCA        |");
+            System.out.println("-------------------------------");
+            System.out.println("\nESCOLHA UMA DAS OPÇÕES ABAIXO:\n");
+            System.out.println("(1) Novo Jogo ");
+            System.out.println("(0) Sair ");
+            opcao = scanner.nextInt();
+        }
+        if (opcao == 1) {
+            System.out.println("Digite seu nome: ");
+            String nome = scanner.next();
+            scanner.close();
+            jogadorFactory.getJogador(nome);
+        }
+        return opcao == 1;
     }
 }

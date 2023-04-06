@@ -34,14 +34,5 @@ public class ElementoGraficoImagemFactory implements ElementoGraficoFactory{
     @Override
     public Letra getLetraEncoberta() {
         return letraImagemFactory.getLetraEncoberta();
-    }
-
-    @Override
-    public Letra criar(char charAt) {
-        return this.letraImagemFactory.criar(charAt);
-    }
-    
-    
-    
-    
+    }   
 }
