@@ -2,14 +2,23 @@ package br.edu.iff;
 
 import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
+import br.edu.iff.bancodepalavras.dominio.palavra.PalavraAppService;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraFactory;
+import br.edu.iff.bancodepalavras.dominio.palavra.PalavraRepository;
 import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.bancodepalavras.dominio.tema.TemaFactory;
+import br.edu.iff.bancodepalavras.dominio.tema.TemaRepository;
 import br.edu.iff.jogoforca.Aplicacao;
 import br.edu.iff.jogoforca.dominio.jogador.Jogador;
 import br.edu.iff.jogoforca.dominio.jogador.JogadorFactory;
+import br.edu.iff.jogoforca.dominio.jogador.JogadorNaoEncontradoException;
+import br.edu.iff.jogoforca.dominio.jogador.JogadorRepository;
 import br.edu.iff.jogoforca.dominio.rodada.Rodada;
+import br.edu.iff.jogoforca.dominio.rodada.RodadaAppService;
 import br.edu.iff.jogoforca.dominio.rodada.RodadaFactory;
+import br.edu.iff.jogoforca.dominio.rodada.RodadaRepository;
+import br.edu.iff.jogoforca.dominio.rodada.sorteio.RodadaSorteioFactory;
+import br.edu.iff.repository.RepositoryException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,23 +26,37 @@ import java.util.Scanner;
 
 public class JogoDaForca {
 
-    private final static List<String> palavrasTemaComida = Arrays.asList("Pera", "Pizza", "Arroz", "Lasanha", "Sushi");
+    private final static List<String> palavrasTemaComida = Arrays.asList("Pera", "Pizza", "Arroz", "Lasanha", "Sushi");    
     private final static List<String> palavrasTemaPais = Arrays.asList("Brasil", "Portugal", "Austria", "China", "Argentina", "Russia", "Gana");
-
+    private final static String TEMA_COMIDA = "comida", TEMA_PAIS = "pais";
+    
     private final static Aplicacao app = Aplicacao.getSoleInstance();
-    private final static JogadorFactory jogadorFactory = app.getJogadorFactory();
-    private final static RodadaFactory rodadaFactory = app.getRodadaFactory();
-    private final static TemaFactory temaFactory = app.getTemaFactory();
-    private final static PalavraFactory palavraFactory = app.getPalavraFactory();    
-
+    private final static JogadorRepository jogadorRepostory = app.getRepositoryFactory().getJogadorRepository();
+    private final static RodadaRepository rodadaRepository = app.getRepositoryFactory().getRodadaRepository();
+    private final static TemaRepository temaRepository = app.getRepositoryFactory().getTemaRepository();
+    private final static PalavraRepository palavraRepository = app.getRepositoryFactory().getPalavraRepository();
+    private final static PalavraFactory palavraFactory = app.getPalavraFactory();
+    
+    private static PalavraAppService palavraAppService;
+    private static RodadaAppService rodadaAppService;
+    
     private static Jogador jogador;   
 
     public static void main(String[] args) {
+       PalavraAppService.createSoleInstance(temaRepository, palavraRepository, palavraFactory);
+       RodadaAppService.createSoleInstance(app.getRodadaFactory(), rodadaRepository, jogadorRepostory);
+       
+        palavraAppService = PalavraAppService.getSoleInstance();
+        rodadaAppService = RodadaAppService.getSoleInstance();
        
         while (true) {
             iniciarPalavrasETemas();
             if (telaInicial()) {
-                telaJogo(jogador, rodadaFactory.getRodada(jogador));
+                try{
+                    telaJogo(jogador, rodadaAppService.novaRodada(jogador));
+                }catch (JogadorNaoEncontradoException e){
+                    System.err.println(e.getMessage());
+                }
             } else {
                 telaFimDeJogo();
                 return;
@@ -128,15 +151,21 @@ public class JogoDaForca {
     }
 
     static void iniciarPalavrasETemas() {
-        Tema comida = temaFactory.getTema("comida");        
-        Tema pais = temaFactory.getTema("país");        
-        //PRECISA INSERIR TEMAS NA MEMORIA
+        Tema comida = app.getTemaFactory().getTema(TEMA_COMIDA);
+        Tema pais = app.getTemaFactory().getTema(TEMA_PAIS);  
+        
+        try{
+            temaRepository.inserir(comida);
+            temaRepository.inserir(pais);
+        }catch (RepositoryException e){
+            System.err.println(e.getMessage());
+        }
         
         for (String palavra : palavrasTemaComida) {
-            palavraFactory.getPalavra(palavra, comida);
+            palavraAppService.novaPalavra(palavra, comida.getId());
         }
         for (String palavra : palavrasTemaPais) {
-            palavraFactory.getPalavra(palavra, pais);
+            palavraAppService.novaPalavra(palavra, pais.getId());
         }
     }
 
@@ -156,7 +185,7 @@ public class JogoDaForca {
             System.out.println("Digite seu nome: ");
             String nome = scanner.next();
             scanner.close();
-            jogadorFactory.getJogador(nome);
+            app.getJogadorFactory().getJogador(nome);
         }
         return opcao == 1;
     }

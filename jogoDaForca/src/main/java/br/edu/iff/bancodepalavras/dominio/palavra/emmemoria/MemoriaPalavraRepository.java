@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MemoriaPalavraRepository implements PalavraRepository {
     
@@ -25,12 +26,17 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 
     @Override
     public Palavra getPorId(Long id) {
-        return (Palavra) this.pool.stream().filter(palavra -> palavra.getId() == id);
+        return this.pool.stream()
+                    .filter(p -> p.getId() == id)
+                    .findFirst()
+                    .orElse(null);
     }
 
     @Override
     public List<Palavra> getPorTema(Tema tema) {
-        return (List<Palavra>) this.pool.stream().filter(palavra -> palavra.getTema() == tema);
+        return this.pool.stream()
+                  .filter(palavra -> palavra.getTema().equals(tema))
+                  .collect(Collectors.toList());
     }
 
     @Override
@@ -40,11 +46,14 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 
     @Override
     public Palavra getPalavra(String palavra) {
-        return (Palavra) this.pool.stream().filter(palavraDaLista -> palavraDaLista.comparar(palavra));
+        return this.pool.stream()
+                    .filter(p -> p.equals(palavra))
+                    .findFirst()
+                    .orElse(null);
     }
 
     @Override
-    public void inserir(Palavra palavra) throws RepositoryException {
+    public void inserir(Palavra palavra) throws RepositoryException {        
         if (this.pool.contains(palavra)){
             throw new RepositoryException("Palavra já inserida no banco de dados");
         }
@@ -58,8 +67,7 @@ public class MemoriaPalavraRepository implements PalavraRepository {
         }
         pool.remove(palavra);
         pool.add(palavra);
-    }
-    
+    }    
 
     @Override
     public void remover(Palavra palavra) throws RepositoryException {
@@ -70,7 +78,7 @@ public class MemoriaPalavraRepository implements PalavraRepository {
     }
 
     @Override
-    public Long getProximoId() {
+    public Long getProximoId() {        
         return Long.valueOf( this.pool.size() + 1);
     }
     

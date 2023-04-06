@@ -9,10 +9,6 @@ public class LetraTexto extends Letra {
         super(codigo);
     }
 
-    public char getCodigo() {
-        return this.getCodigo();
-    }
-
     @Override
     public void exibir(Object contexto) {
         System.out.print(this.getCodigo());
