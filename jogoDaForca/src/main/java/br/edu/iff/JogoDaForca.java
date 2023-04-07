@@ -43,7 +43,7 @@ public class JogoDaForca {
     private static Jogador jogador;   
 
     public static void main(String[] args) {
-       PalavraAppService.createSoleInstance(temaRepository, palavraRepository, palavraFactory);
+       PalavraAppService.createSoleInstance(temaRepository, palavraRepository, palavraFactory);               
        RodadaAppService.createSoleInstance(app.getRodadaFactory(), rodadaRepository, jogadorRepostory);
        
         palavraAppService = PalavraAppService.getSoleInstance();
@@ -56,6 +56,7 @@ public class JogoDaForca {
                     telaJogo(jogador, rodadaAppService.novaRodada(jogador));
                 }catch (JogadorNaoEncontradoException e){
                     System.err.println(e.getMessage());
+                    return;
                 }
             } else {
                 telaFimDeJogo();
@@ -152,14 +153,7 @@ public class JogoDaForca {
 
     static void iniciarPalavrasETemas() {
         Tema comida = app.getTemaFactory().getTema(TEMA_COMIDA);
-        Tema pais = app.getTemaFactory().getTema(TEMA_PAIS);  
-        
-        try{
-            temaRepository.inserir(comida);
-            temaRepository.inserir(pais);
-        }catch (RepositoryException e){
-            System.err.println(e.getMessage());
-        }
+        Tema pais = app.getTemaFactory().getTema(TEMA_PAIS);    
         
         for (String palavra : palavrasTemaComida) {
             palavraAppService.novaPalavra(palavra, comida.getId());
@@ -171,22 +165,22 @@ public class JogoDaForca {
 
     static boolean telaInicial() {
         Scanner scanner = new Scanner(System.in);
-        int opcao = 2;
-        while (opcao != 0 && opcao != 1) {           
+        String opcao = "2";
+        while (!opcao.equals("0") && !opcao.equals("1")) {           
             System.out.println("\n-------------------------------");
             System.out.println("|        JOGO DA FORCA        |");
             System.out.println("-------------------------------");
             System.out.println("\nESCOLHA UMA DAS OPÇÕES ABAIXO:\n");
             System.out.println("(1) Novo Jogo ");
             System.out.println("(0) Sair ");
-            opcao = scanner.nextInt();
+            opcao = scanner.next();
         }
-        if (opcao == 1) {
+        if (opcao.equals("1")) {
             System.out.println("Digite seu nome: ");
             String nome = scanner.next();
             scanner.close();
-            app.getJogadorFactory().getJogador(nome);
+            jogador = app.getJogadorFactory().getJogador(nome);
         }
-        return opcao == 1;
+        return opcao.equals("1");
     }
 }

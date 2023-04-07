@@ -20,11 +20,14 @@ public class RodadaAppService {
     }
 
     public static void createSoleInstance(RodadaFactory rodadaFactory, RodadaRepository rodadaRepository, JogadorRepository jogadorRepository) {
-        new RodadaAppService(rodadaFactory, rodadaRepository, jogadorRepository);
+        soleInstance = new RodadaAppService(rodadaFactory, rodadaRepository, jogadorRepository);
     }
 
     public static RodadaAppService getSoleInstance() {
-        return soleInstance == null ? new RodadaAppService(null, null, null) : soleInstance;
+        if (soleInstance == null){
+            throw new RuntimeException("Necessária a inicialização do serviço");
+        }
+        return soleInstance;
     }
 
     public Rodada novaRodada(Long idJogador) throws JogadorNaoEncontradoException {
@@ -41,7 +44,7 @@ public class RodadaAppService {
         if (jogador == null) {
             throw new JogadorNaoEncontradoException("Jogador não encontrado!");
         }
-        return rodadaFactory.getRodada(jogador);
+        return this.rodadaFactory.getRodada(jogador);
     }
 
     public boolean salvaRodada(Rodada rodada) {

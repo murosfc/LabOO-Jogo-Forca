@@ -2,6 +2,7 @@ package br.edu.iff.jogoforca.dominio.jogador;
 
 import br.edu.iff.factory.EntityFactory;
 import br.edu.iff.repository.Repository;
+import br.edu.iff.repository.RepositoryException;
 
 public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory{
 
@@ -22,10 +23,20 @@ public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory{
 
     public JogadorFactoryImpl(Repository repository) {
         super(repository);
+    }    
+   
+    private JogadorRepository getJogadorRepository(){
+        return (JogadorRepository) this.repository;
     }
 
     @Override
     public Jogador getJogador(String nome) {
-        return Jogador.criar(getProximoId(), nome);
+        Jogador novoJogador = Jogador.criar(getProximoId(), nome);        
+        try {
+            this.getJogadorRepository().inserir(novoJogador);
+        } catch (RepositoryException e) {
+            System.err.println(e.getMessage());
+        }
+        return  novoJogador;
     }
 }

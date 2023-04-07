@@ -13,7 +13,7 @@ public class BDRJogadorRepository implements JogadorRepository {
     private BDRJogadorRepository() {}
 
     @Override
-    public Jogador getPorId(long id) {
+    public Jogador getPorId(Long id) {
         return null;
     }
 

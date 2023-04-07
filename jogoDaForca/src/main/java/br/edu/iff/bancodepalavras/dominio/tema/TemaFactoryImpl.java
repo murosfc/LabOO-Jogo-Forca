@@ -1,6 +1,7 @@
 package br.edu.iff.bancodepalavras.dominio.tema;
 
 import br.edu.iff.factory.EntityFactory;
+import br.edu.iff.repository.RepositoryException;
 
 public class TemaFactoryImpl extends EntityFactory implements TemaFactory{
     private static TemaFactoryImpl soleInstance;   
@@ -28,7 +29,13 @@ public class TemaFactoryImpl extends EntityFactory implements TemaFactory{
     
     @Override
     public Tema getTema(String nome) {
-        return Tema.criar(getProximoId(), nome);
+        Tema novoTema = Tema.criar(getProximoId(), nome);
+        try{
+            this.getTemaRepository().inserir(novoTema);
+        }catch (RepositoryException e){
+            System.err.println(e.getMessage());
+        }
+        return novoTema;
     }
    
 }

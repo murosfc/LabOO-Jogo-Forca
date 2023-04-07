@@ -12,7 +12,7 @@ public class MemoriaRodadaRepository implements RodadaRepository{
     private List <Rodada> pool;
 
     private MemoriaRodadaRepository() {
-        pool = new ArrayList<>();
+        this.pool = new ArrayList<>();
     }  
 
     public static MemoriaRodadaRepository getSoleInstance() {

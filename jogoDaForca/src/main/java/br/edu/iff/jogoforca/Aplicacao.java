@@ -52,13 +52,13 @@ public class Aplicacao {
             this.elementoGraficoFactory = ElementoGraficoTextoFactory.getSoleInstance();
         } else if (this.tipoElementoGraficoFactory.equalsIgnoreCase(TIPOS_ELEMENTO_GRAFICO_FACTORY[1])) {
             this.elementoGraficoFactory = ElementoGraficoImagemFactory.getSoleInstance();
-        }
-
-        if (this.tipoRodadaFactory.equalsIgnoreCase(TIPOS_RODADA_FACTORY[0])) {
+        }      
+        
+        if (this.tipoRodadaFactory.equalsIgnoreCase(TIPOS_RODADA_FACTORY[0])) {            
             RodadaSorteioFactory.createSoleInstance(this.repositoryFactory.getRodadaRepository(),
                     this.repositoryFactory.getTemaRepository(),
                     this.repositoryFactory.getPalavraRepository());
-            this.rodadaFactory = RodadaSorteioFactory.getSoleInstance();
+            this.rodadaFactory = RodadaSorteioFactory.getSoleInstance();           
         }
 
         TemaFactoryImpl.createSoleInstance(this.repositoryFactory.getTemaRepository());
@@ -109,7 +109,7 @@ public class Aplicacao {
     }
 
     public RodadaFactory getRodadaFactory() {
-        return rodadaFactory;
+        return this.rodadaFactory;
     }
 
     public TemaFactory getTemaFactory() {
