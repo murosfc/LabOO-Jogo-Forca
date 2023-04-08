@@ -16,7 +16,7 @@ public class BonecoTextoFactory implements BonecoFactory{
 
     @Override
     public Boneco getBoneco() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    	return BonecoTexto.getSoleInstance();   
     }
     
 }
