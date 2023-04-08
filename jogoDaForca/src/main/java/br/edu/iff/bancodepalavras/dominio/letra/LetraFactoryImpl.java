@@ -1,7 +1,7 @@
 package br.edu.iff.bancodepalavras.dominio.letra;
 
 public abstract class LetraFactoryImpl implements LetraFactory {
-    private final static int POOL_SIZE = 27;
+    private final static int POOL_SIZE = 26;
     private Letra[] pool;
     private Letra encoberta;
     
