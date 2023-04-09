@@ -21,7 +21,7 @@ public abstract class Letra {
         if (o == this) return true;
         if (!(o instanceof Letra)) return false;
         Letra letra = (Letra) o;
-        return codigo == letra.codigo;
+        return codigo == letra.codigo && this.getClass().equals(letra.getClass());
     }
 
     @Override

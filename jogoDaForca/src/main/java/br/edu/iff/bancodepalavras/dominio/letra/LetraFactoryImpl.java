@@ -1,32 +1,33 @@
 package br.edu.iff.bancodepalavras.dominio.letra;
 
-import java.util.HashMap;
-
 public abstract class LetraFactoryImpl implements LetraFactory {
     private final static int POOL_SIZE = 26;
-    private HashMap<Integer,Letra> pool;
+    private Letra[] pool;
     private Letra encoberta;
     
     protected LetraFactoryImpl(){ 
-        pool = new HashMap<Integer,Letra>(POOL_SIZE);
+        this.pool = new Letra[POOL_SIZE];
+        this.encoberta = null;
     } 
     
     @Override
     public final Letra getLetra(char codigo){
-        if (!Character.isLetter(codigo))
-            throw new IllegalArgumentException("Código de caractere inválido");
-        int i = codigo;
-        Letra result = this.pool.get(i);
-        if (result == null){
-            result = this.criarLetra(codigo);
-            this.pool.put( i, result);
-        }
-        return result;
-    }    
+    	int i = codigo - 'a';
+    	Letra letra = this.pool[i];
+	    if (letra == null) {
+	      letra = this.criarLetra(codigo);
+	      this.pool[i] = letra;
+	    }
+	    return letra;
+    }
 
     @Override
     public final Letra getLetraEncoberta() {
-        return encoberta;
+    	if (encoberta == null) {
+    		char code = '#';
+    		this.encoberta = criarLetra(code);
+	    }
+	    return this.encoberta;
     }
 
     protected abstract Letra criarLetra(char codigo);
