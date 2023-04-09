@@ -190,6 +190,8 @@ public class Rodada extends ObjetoDominioImpl {
     }
 
     public boolean encerrou() {
+        System.out.println(this.descobriu());
+
         return this.arriscou() || this.descobriu() || this.getQuantidadeTentativasRestantes() == 0;
     }
 
