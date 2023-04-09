@@ -71,6 +71,7 @@ public class Rodada extends ObjetoDominioImpl {
         this.palavras = palavras;
         this.jogador = jogador;
         this.erradas = new ArrayList<>();
+        this.itens = new ArrayList<>();
     }
 
     private Rodada(Long id, Jogador jogador, List<Item> itens, List<Letra> erradas) {

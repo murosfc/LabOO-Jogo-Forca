@@ -33,7 +33,10 @@ public class MemoriaRodadaRepository implements RodadaRepository{
 
     @Override
     public void inserir(Rodada rodada) throws RepositoryException {
-        throw new UnsupportedOperationException("Not supported yet."); 
+    	 if (pool.contains(rodada)){
+             throw new RepositoryException("Este tema já existe no banco");
+         }
+         this.pool.add(rodada);
     }
 
     @Override
@@ -48,6 +51,6 @@ public class MemoriaRodadaRepository implements RodadaRepository{
 
     @Override
     public Long getProximoId() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        return Long.valueOf(this.pool.size() + 1);
     }
 }

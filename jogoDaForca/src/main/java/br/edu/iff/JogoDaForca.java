@@ -173,7 +173,11 @@ public class JogoDaForca {
             System.out.println("\nESCOLHA UMA DAS OPÇÕES ABAIXO:\n");
             System.out.println("(1) Novo Jogo ");
             System.out.println("(0) Sair ");
-            opcao = scanner.next();
+            
+
+			if (scanner.hasNextInt()) {
+	            opcao = scanner.next();
+			}
         }
         if (opcao.equals("1")) {
             System.out.println("Digite seu nome: ");
