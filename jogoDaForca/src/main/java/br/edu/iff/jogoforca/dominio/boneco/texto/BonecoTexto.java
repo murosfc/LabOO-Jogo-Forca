@@ -1,15 +1,14 @@
 package br.edu.iff.jogoforca.dominio.boneco.texto;
 
 import br.edu.iff.jogoforca.dominio.boneco.Boneco;
+import br.edu.iff.jogoforca.dominio.boneco.BonecoFactory;
 
-public class BonecoTexto implements Boneco {
+public class BonecoTexto implements Boneco{
 
     private static BonecoTexto soleInstance = null;
 
     public static BonecoTexto getSoleInstance() {
-        if (soleInstance == null)
-            soleInstance = new BonecoTexto();
-        return soleInstance;
+        return soleInstance == null ? soleInstance = new BonecoTexto() : soleInstance;       
     }
 
     private BonecoTexto() {
@@ -21,53 +20,41 @@ public class BonecoTexto implements Boneco {
 
             case 1:
                 System.out.println("1 - cabeça");
-
                 break;
-
             case 2:
                 System.out.println("2 - cabeça, olho esquerdo");
-
                 break;
-
             case 3:
-                System.out.println("3 - cabeça, olho esquerdo, olho direito\n");
-
+                System.out.println("3 - cabeça, olho esquerdo, olho direito");
                 break;
-
             case 4:
                 System.out.println("4 - cabeça, olho esquerdo, olho direito, nariz");
-
-                break;
+                break;                
             case 5:
                 System.out.println("5 - cabeça, olho esquerdo, olho direito, nariz, boca");
-
-                break;
+                break;                
             case 6:
                 System.out.println("6 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco");
-
-                break;
+                break;                
             case 7:
-                System.out.println("7 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco, \n" +
-                        "braço esquerdo");
-
-                break;
+                System.out.println("7 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco,"
+                        + "braço esquerdo");
+                break;                
             case 8:
-                System.out.println("8 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco, \n" +
-                        "braço esquerdo, braço direito");
-
+                System.out.println("8 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco,"
+                        + "braço esquerdo, braço direito");
                 break;
             case 9:
-                System.out.println("9 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco, \n" +
-                        "braço esquerdo, braço direito, perna esquerda");
-
+                System.out.println("9 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco,"
+                        + "braço esquerdo, braço direito, perna esquerda");
                 break;
             case 10:
-                System.out.println("10 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco, \n" +
-                        "braço esquerdo, braço direito, perna esquerda, perna direita\n ");
-
+                System.out.println("10 - cabeça, olho esquerdo, olho direito, nariz, boca, tronco,"
+                        + "braço esquerdo, braço direito, perna esquerda, perna direita");
                 break;
             default:
+                System.out.println("");
 
         }
-    }
+    }    
 }

@@ -11,7 +11,11 @@ public class LetraTexto extends Letra {
 
     @Override
     public void exibir(Object contexto) {
-        System.out.print(this.getCodigo());
+        System.out.println(this.getCodigo());
+    }
+    
+    public void exibirOculto(Object contexto) {
+        System.out.println("_");
     }
 
     @Override

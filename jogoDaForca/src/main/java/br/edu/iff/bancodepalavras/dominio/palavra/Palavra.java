@@ -2,7 +2,6 @@ package br.edu.iff.bancodepalavras.dominio.palavra;
 
 import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.letra.LetraFactory;
-import br.edu.iff.bancodepalavras.dominio.letra.LetraFactoryImpl;
 import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.dominio.ObjetoDominioImpl;
 import java.util.ArrayList;

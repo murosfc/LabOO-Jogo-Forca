@@ -2,6 +2,7 @@ package br.edu.iff.jogoforca.dominio.rodada;
 
 import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
+import br.edu.iff.bancodepalavras.dominio.palavra.emmemoria.MemoriaPalavraRepository;
 import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.dominio.ObjetoDominioImpl;
 import br.edu.iff.jogoforca.dominio.boneco.BonecoFactory;
@@ -22,8 +23,7 @@ public class Rodada extends ObjetoDominioImpl {
 
     private List<Palavra> palavras;
     private Jogador jogador;
-    private List<Item> itens;
-    private List<Letra> certas;
+    private List<Item> itens;    
     private List<Letra> erradas;
 
     public static int getMaxPalavras() {
@@ -70,8 +70,13 @@ public class Rodada extends ObjetoDominioImpl {
         super(id);
         this.palavras = palavras;
         this.jogador = jogador;
-        this.erradas = new ArrayList<>();
+        this.erradas = new ArrayList<>();      
         this.itens = new ArrayList<>();
+        MemoriaPalavraRepository memoriaPalavraRepository = MemoriaPalavraRepository.getSoleInstance();
+        for (Palavra p: palavras){
+            Item item = Item.criar(memoriaPalavraRepository.getProximoId(), p);
+            this.itens.add(item);
+        }
     }
 
     private Rodada(Long id, Jogador jogador, List<Item> itens, List<Letra> erradas) {
@@ -79,6 +84,9 @@ public class Rodada extends ObjetoDominioImpl {
         this.jogador = jogador;
         this.itens = itens;
         this.erradas = erradas;
+        for (Item item : itens){
+            this.palavras.add(item.getPalavra());
+        }
     }
 
     public static Rodada criar(Long id, List<Palavra> palavras, Jogador jogador) {
@@ -142,8 +150,8 @@ public class Rodada extends ObjetoDominioImpl {
         }
     }
 
-    public void exibirBoneco(Object contexto) {
-        bonecoFactory.getBoneco().exibir(contexto, this.getQuantidadeErros());
+    public void exibirBoneco(Object contexto) {        
+        getBonecoFactory().getBoneco().exibir(contexto, this.getQuantidadeErros());
     }
 
     public void exibirPalavras(Object contexto) {
@@ -169,7 +177,7 @@ public class Rodada extends ObjetoDominioImpl {
     public List<Letra> getCertas() {
         Set<Letra> setLetras = new HashSet<>();
         for (Item item : this.itens) {
-            setLetras.addAll(item.getPalavra().getLetras());
+            setLetras.addAll(item.getLetrasDescobertas());
         }
         List<Letra> listaMesclada = new ArrayList<>(setLetras);
         return listaMesclada;        
@@ -189,13 +197,13 @@ public class Rodada extends ObjetoDominioImpl {
         return totalPontos;
     }
 
-    public boolean encerrou() {
-        System.out.println(this.descobriu());
-
+    public boolean encerrou() {                 
         return this.arriscou() || this.descobriu() || this.getQuantidadeTentativasRestantes() == 0;
     }
 
     public boolean descobriu() {
+        if (this.itens.size() == 0)  
+            return false;
         boolean descobriu = true;
         for (Item item : this.itens) {
             if (!item.descobriu()) {

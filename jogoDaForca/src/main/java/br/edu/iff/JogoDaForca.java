@@ -6,19 +6,14 @@ import br.edu.iff.bancodepalavras.dominio.palavra.PalavraAppService;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraFactory;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraRepository;
 import br.edu.iff.bancodepalavras.dominio.tema.Tema;
-import br.edu.iff.bancodepalavras.dominio.tema.TemaFactory;
 import br.edu.iff.bancodepalavras.dominio.tema.TemaRepository;
 import br.edu.iff.jogoforca.Aplicacao;
 import br.edu.iff.jogoforca.dominio.jogador.Jogador;
-import br.edu.iff.jogoforca.dominio.jogador.JogadorFactory;
 import br.edu.iff.jogoforca.dominio.jogador.JogadorNaoEncontradoException;
 import br.edu.iff.jogoforca.dominio.jogador.JogadorRepository;
 import br.edu.iff.jogoforca.dominio.rodada.Rodada;
 import br.edu.iff.jogoforca.dominio.rodada.RodadaAppService;
-import br.edu.iff.jogoforca.dominio.rodada.RodadaFactory;
 import br.edu.iff.jogoforca.dominio.rodada.RodadaRepository;
-import br.edu.iff.jogoforca.dominio.rodada.sorteio.RodadaSorteioFactory;
-import br.edu.iff.repository.RepositoryException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,35 +21,35 @@ import java.util.Scanner;
 
 public class JogoDaForca {
 
-    private final static List<String> palavrasTemaComida = Arrays.asList("Pera", "Pizza", "Arroz", "Lasanha", "Sushi");    
+    private final static List<String> palavrasTemaComida = Arrays.asList("Pera", "Pizza", "Arroz", "Lasanha", "Sushi");
     private final static List<String> palavrasTemaPais = Arrays.asList("Brasil", "Portugal", "Austria", "China", "Argentina", "Russia", "Gana");
     private final static String TEMA_COMIDA = "comida", TEMA_PAIS = "pais";
-    
+
     private final static Aplicacao app = Aplicacao.getSoleInstance();
     private final static JogadorRepository jogadorRepostory = app.getRepositoryFactory().getJogadorRepository();
     private final static RodadaRepository rodadaRepository = app.getRepositoryFactory().getRodadaRepository();
     private final static TemaRepository temaRepository = app.getRepositoryFactory().getTemaRepository();
     private final static PalavraRepository palavraRepository = app.getRepositoryFactory().getPalavraRepository();
     private final static PalavraFactory palavraFactory = app.getPalavraFactory();
-    
+
     private static PalavraAppService palavraAppService;
     private static RodadaAppService rodadaAppService;
-    
-    private static Jogador jogador;   
+
+    private static Jogador jogador;
 
     public static void main(String[] args) {
-       PalavraAppService.createSoleInstance(temaRepository, palavraRepository, palavraFactory);               
-       RodadaAppService.createSoleInstance(app.getRodadaFactory(), rodadaRepository, jogadorRepostory);
-       
+        PalavraAppService.createSoleInstance(temaRepository, palavraRepository, palavraFactory);
+        RodadaAppService.createSoleInstance(app.getRodadaFactory(), rodadaRepository, jogadorRepostory);
+
         palavraAppService = PalavraAppService.getSoleInstance();
         rodadaAppService = RodadaAppService.getSoleInstance();
-       
-        while (true) {
+
+        //while(true){
             iniciarPalavrasETemas();
             if (telaInicial()) {
-                try{
+                try {
                     telaJogo(jogador, rodadaAppService.novaRodada(jogador));
-                }catch (JogadorNaoEncontradoException e){
+                } catch (JogadorNaoEncontradoException e) {
                     System.err.println(e.getMessage());
                     return;
                 }
@@ -62,11 +57,11 @@ public class JogoDaForca {
                 telaFimDeJogo();
                 return;
             }
-        }
+        //}
+        
     }
 
-
-    static void telaFimDeJogo() {        
+    static void telaFimDeJogo() {
         System.out.println("\n\nObrigado por ter jogado o jogo da forca");
         System.out.println("Implementado por Bruno , Felipe Muros e Rafael Panisset");
         System.out.println("Desenhado e supervisionado pelo professor Mark Douglas");
@@ -75,7 +70,7 @@ public class JogoDaForca {
         System.out.println("Abril de 2023\n\n");
     }
 
-    static void telaJogo(Jogador jogador, Rodada rodada) {
+    static void telaJogo(Jogador jogador, Rodada rodada) {        
         while (!rodada.encerrou()) {
             System.out.println("\nOlá " + jogador.getNome());
             System.out.println("O tema da rodada é: " + rodada.getTema().getNome());
@@ -91,7 +86,7 @@ public class JogoDaForca {
                 }
             }
 
-            System.out.println("Palavras da rodada:");
+            System.out.println("\nPalavras da rodada:");
             rodada.exibirItens(null);
             System.out.println();
             System.out.println("Tentativa: " + rodada.getQuantidadeErros() + " de " + Rodada.getMaxErros());
@@ -153,8 +148,8 @@ public class JogoDaForca {
 
     static void iniciarPalavrasETemas() {
         Tema comida = app.getTemaFactory().getTema(TEMA_COMIDA);
-        Tema pais = app.getTemaFactory().getTema(TEMA_PAIS);    
-        
+        Tema pais = app.getTemaFactory().getTema(TEMA_PAIS);
+
         for (String palavra : palavrasTemaComida) {
             palavraAppService.novaPalavra(palavra, comida.getId());
         }
@@ -166,18 +161,17 @@ public class JogoDaForca {
     static boolean telaInicial() {
         Scanner scanner = new Scanner(System.in);
         String opcao = "2";
-        while (!opcao.equals("0") && !opcao.equals("1")) {           
+        while (!opcao.equals("0") && !opcao.equals("1")) {
             System.out.println("\n-------------------------------");
             System.out.println("|        JOGO DA FORCA        |");
             System.out.println("-------------------------------");
             System.out.println("\nESCOLHA UMA DAS OPÇÕES ABAIXO:\n");
             System.out.println("(1) Novo Jogo ");
             System.out.println("(0) Sair ");
-            
 
-			if (scanner.hasNextInt()) {
-	            opcao = scanner.next();
-			}
+            if (scanner.hasNextInt()) {
+                opcao = scanner.next();
+            }
         }
         if (opcao.equals("1")) {
             System.out.println("Digite seu nome: ");

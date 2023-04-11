@@ -6,6 +6,7 @@ import br.edu.iff.jogoforca.dominio.rodada.RodadaRepository;
 import br.edu.iff.repository.RepositoryException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MemoriaRodadaRepository implements RodadaRepository{
     private static MemoriaRodadaRepository soleInstance = null;
@@ -23,12 +24,17 @@ public class MemoriaRodadaRepository implements RodadaRepository{
 
     @Override
     public Rodada getPorId(Long id) {
-       return null; //Não há métodos estáticos em Rodada para esta busca
+       return this.pool.stream()
+        .filter(rodada -> rodada.getId().equals(id))
+        .findFirst()
+        .orElse(null);
     }
 
     @Override
     public List<Rodada> getPorJogador(Jogador jogador) {
-        return null; //Não há métodos estáticos em Rodada para esta busca
+        return this.pool.stream()
+        .filter(rodada -> rodada.getJogador().equals(jogador))
+        .collect(Collectors.toList());
     }
 
     @Override

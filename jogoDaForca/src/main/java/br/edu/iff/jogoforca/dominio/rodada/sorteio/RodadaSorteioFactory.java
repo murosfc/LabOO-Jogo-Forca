@@ -17,7 +17,7 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl{
     private static RodadaSorteioFactory soleInstance = null;    
    
     @Override
-    public Rodada getRodada(Jogador jogador) {
+    public Rodada getRodada(Jogador jogador) {        
         Random random = new Random();
         
         List<Tema> temasDisponíveis = getTemaRepository().getTodos();       
@@ -40,7 +40,7 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl{
             }
         }
         
-        Rodada rodada = Rodada.criar(getProximoId(), palavrasSorteadas, jogador);
+        Rodada rodada = Rodada.criar(getProximoId(), palavrasSorteadas, jogador);       
         
         try{
             getRodadaRepository().inserir(rodada);

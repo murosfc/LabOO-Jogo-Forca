@@ -2,10 +2,8 @@ package br.edu.iff.jogoforca.dominio.rodada;
 
 import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
-import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.dominio.ObjetoDominioImpl;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Item extends ObjetoDominioImpl {
@@ -24,9 +22,10 @@ public class Item extends ObjetoDominioImpl {
 
     private Item(Long id, Palavra palavra) {
         super(id);
-        this.palavra = palavra;
-        this.posicoesDescobertas = new ArrayList<Boolean>(palavra.getLetras().size());
-        Collections.fill(posicoesDescobertas, Boolean.FALSE);
+        this.palavra = palavra;       
+        this.posicoesDescobertas = new ArrayList<Boolean>();
+        for(int i = 0; i< palavra.getLetras().size(); i++)
+            posicoesDescobertas.add(Boolean.FALSE);      
     }
 
     private Item(Long id, Palavra palavra, List<Boolean> posicoesDescobertas, String palavraArriscada) {
@@ -41,23 +40,24 @@ public class Item extends ObjetoDominioImpl {
     }
 
     public List<Letra> getLetrasDescobertas() {
-        return getLetrasEncobertasOuDescobertas(true);
+        List<Letra> descobertas = new ArrayList();
+        for (int i = 0; i < this.palavra.getTamanho(); i++) {
+            if (this.posicoesDescobertas.get(i)){
+                descobertas.add(this.palavra.getLetra(i));
+            }
+        }
+        return descobertas;
     }
 
     public List<Letra> getLetrasEncobertas() {
-        return getLetrasEncobertasOuDescobertas(false);
-    }
-
-    private List<Letra> getLetrasEncobertasOuDescobertas(Boolean descoberta) {
-        List<Letra> letrasBuscadas = new ArrayList<>();
+        List<Letra> encobertas = new ArrayList();
         for (int i = 0; i < this.palavra.getTamanho(); i++) {
-            boolean invertValue = (descoberta) ? this.posicoesDescobertas.get(i) : !this.posicoesDescobertas.get(i);
-            if (this.posicoesDescobertas.get(i)) {
-                letrasBuscadas.add(this.palavra.getLetra(i));
+            if (!this.posicoesDescobertas.get(i)){
+                encobertas.add(this.palavra.getLetra(i));
             }
         }
-        return letrasBuscadas;
-    }
+        return encobertas;
+    }  
 
     public int quantidadeLetrasEncobertas() {
         return this.getLetrasEncobertas().size();
@@ -67,12 +67,15 @@ public class Item extends ObjetoDominioImpl {
         return this.quantidadeLetrasEncobertas() * valorPorLetraEncoberta;
     }
     
-    public boolean descobriu(){
+    public boolean descobriu(){     
         return this.acertou() || this.quantidadeLetrasEncobertas() == 0;
     }
     
     public void exibir(Object context){
-        this.palavra.exibir(context, this.posicoesDescobertas);
+        List<Letra> letras = this.palavra.getLetras();
+        for (Letra l : letras){
+            l.equals(context);
+        }       
     }
     
     List<Integer> tentar(char codigo){
@@ -102,8 +105,8 @@ public class Item extends ObjetoDominioImpl {
         return palavraArriscada != null;
     }
     
-    public boolean acertou(){
-        return this.palavra.comparar(palavraArriscada);
+    public boolean acertou(){        
+        return palavraArriscada == null ? false : this.palavra.comparar(palavraArriscada);
     }
    
 }
