@@ -18,9 +18,7 @@ public class ElementoGraficoTextoFactory implements ElementoGraficoFactory{
     }
 
     public static ElementoGraficoTextoFactory getSoleInstance() {
-        if (soleInstance == null)
-            soleInstance = new ElementoGraficoTextoFactory();
-        return soleInstance;
+        return soleInstance == null ? soleInstance = new ElementoGraficoTextoFactory() : soleInstance;           
     }
 
     @Override
@@ -37,4 +35,5 @@ public class ElementoGraficoTextoFactory implements ElementoGraficoFactory{
     public Letra getLetraEncoberta() {
         return this.letraTextoFactory.getLetraEncoberta();
     }
+    
 }

@@ -35,4 +35,5 @@ public class ElementoGraficoImagemFactory implements ElementoGraficoFactory{
     public Letra getLetraEncoberta() {
         return letraImagemFactory.getLetraEncoberta();
     }   
+
 }

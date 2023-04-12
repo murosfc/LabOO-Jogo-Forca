@@ -15,4 +15,5 @@ public class LetraImagemFactory extends LetraFactoryImpl {
     protected Letra criarLetra(char codigo) {
         return null;
     }
+    
 }

@@ -37,6 +37,6 @@ public class Jogador extends ObjetoDominioImpl {
     }
 
     public void setPontuacao(int pontuacao) {
-        this.pontuacao = pontuacao;
+        this.pontuacao += pontuacao;
     }
 }

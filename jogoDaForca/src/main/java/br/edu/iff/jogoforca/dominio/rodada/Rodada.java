@@ -5,6 +5,7 @@ import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
 import br.edu.iff.bancodepalavras.dominio.palavra.emmemoria.MemoriaPalavraRepository;
 import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.dominio.ObjetoDominioImpl;
+import br.edu.iff.jogoforca.Aplicacao;
 import br.edu.iff.jogoforca.dominio.boneco.BonecoFactory;
 import br.edu.iff.jogoforca.dominio.jogador.Jogador;
 import java.util.ArrayList;
@@ -19,11 +20,11 @@ public class Rodada extends ObjetoDominioImpl {
     private static int pontosQuandoDescobreTodasAsPalavras = 100;
     private static int pontosPorLetraEncoberta = 15;
 
-    private static BonecoFactory bonecoFactory;
+    private static BonecoFactory bonecoFactory = Aplicacao.getSoleInstance().getBonecoFactory();
 
     private List<Palavra> palavras;
     private Jogador jogador;
-    private List<Item> itens;    
+    private List<Item> itens;
     private List<Letra> erradas;
 
     public static int getMaxPalavras() {
@@ -70,10 +71,10 @@ public class Rodada extends ObjetoDominioImpl {
         super(id);
         this.palavras = palavras;
         this.jogador = jogador;
-        this.erradas = new ArrayList<>();      
+        this.erradas = new ArrayList<>();
         this.itens = new ArrayList<>();
         MemoriaPalavraRepository memoriaPalavraRepository = MemoriaPalavraRepository.getSoleInstance();
-        for (Palavra p: palavras){
+        for (Palavra p : palavras) {
             Item item = Item.criar(memoriaPalavraRepository.getProximoId(), p);
             this.itens.add(item);
         }
@@ -84,7 +85,7 @@ public class Rodada extends ObjetoDominioImpl {
         this.jogador = jogador;
         this.itens = itens;
         this.erradas = erradas;
-        for (Item item : itens){
+        for (Item item : itens) {
             this.palavras.add(item.getPalavra());
         }
     }
@@ -102,7 +103,10 @@ public class Rodada extends ObjetoDominioImpl {
     }
 
     public Tema getTema() {
-        return this.itens.get(0).getPalavra().getTema();
+        if (!this.palavras.isEmpty()) {
+            return this.palavras.get(0).getTema();
+        }
+        return null;
     }
 
     public List<Palavra> getPalavras() {
@@ -115,28 +119,28 @@ public class Rodada extends ObjetoDominioImpl {
 
     public void tentar(char codigo) {
         if (!this.encerrou()) {
-            boolean errada = true;
+            boolean errada = Boolean.TRUE;
             for (Item item : this.itens) {
-                List<Integer> posicoesLetras = item.tentar(codigo);
-                if (!posicoesLetras.isEmpty()) {
-                    errada = false;
+                if (item.tentar(codigo)) {
+                    errada = Boolean.FALSE;
                 }
             }
             if (errada) {
                 this.erradas.add(Palavra.getLetraFactory().getLetra(codigo));
             }
         }
-        if (this.encerrou())
+        if (this.encerrou()) {
             this.jogador.setPontuacao(this.calcularPontos());
+        }
     }
 
     public void arriscar(List<Palavra> palavras) {
-        if (! this.encerrou()){
-            if (palavras.size() != this.itens.size()){
+        if (!this.encerrou()) {
+            if (palavras.size() != this.itens.size()) {
                 System.err.println("A quantidade de palpites difere da quantidade de palavras da rodada");
             }
             int i = 0;
-            for (Item item : this.itens){
+            for (Item item : this.itens) {
                 item.arriscar(palavras.get(i).toString());
                 i++;
             }
@@ -147,22 +151,28 @@ public class Rodada extends ObjetoDominioImpl {
     public void exibirItens(Object contexto) {
         for (Item item : this.itens) {
             item.exibir(contexto);
+            System.out.printf(" "); //O método criar letra é protected, ao usar o getLetra estouramos o tamanho do pool, então a impressão do espaço foi forçada
         }
     }
 
-    public void exibirBoneco(Object contexto) {        
+    public void exibirBoneco(Object contexto) {
         getBonecoFactory().getBoneco().exibir(contexto, this.getQuantidadeErros());
     }
 
-    public void exibirPalavras(Object contexto) {
-         for (Item item : this.itens) {
+    public void exibirPalavras(Object contexto) {        
+        for (Item item : this.itens) {
             item.getPalavra().exibir(contexto);
+            System.out.printf(" ");
         }
     }
 
     public void exibirLetrasErradas(Object contexto) {
-        for (Letra l: this.erradas){
+        int i = 0;
+        for (Letra l : this.erradas) {
             l.exibir(contexto);
+            if(i<this.erradas.size()-1)
+                System.out.printf(", ");
+            i++;
         }
     }
 
@@ -171,7 +181,7 @@ public class Rodada extends ObjetoDominioImpl {
         setLetras.addAll(this.getCertas());
         setLetras.addAll(this.getErradas());
         List<Letra> listaMesclada = new ArrayList<>(setLetras);
-        return listaMesclada; 
+        return listaMesclada;
     }
 
     public List<Letra> getCertas() {
@@ -180,30 +190,31 @@ public class Rodada extends ObjetoDominioImpl {
             setLetras.addAll(item.getLetrasDescobertas());
         }
         List<Letra> listaMesclada = new ArrayList<>(setLetras);
-        return listaMesclada;        
+        return listaMesclada;
     }
 
-    public List<Letra> getErradas() {        
+    public List<Letra> getErradas() {
         return this.erradas;
     }
 
     public int calcularPontos() {
         int totalPontos = 0;
         for (Item item : this.itens) {
-            if(item.descobriu()){
+            if (item.descobriu()) {
                 totalPontos += pontosQuandoDescobreTodasAsPalavras + item.calcularPontosLetrasEncobertas(pontosPorLetraEncoberta);
             }
         }
         return totalPontos;
     }
 
-    public boolean encerrou() {                 
+    public boolean encerrou() {
         return this.arriscou() || this.descobriu() || this.getQuantidadeTentativasRestantes() == 0;
     }
 
     public boolean descobriu() {
-        if (this.itens.size() == 0)  
+        if (this.itens.size() == 0) {
             return false;
+        }
         boolean descobriu = true;
         for (Item item : this.itens) {
             if (!item.descobriu()) {

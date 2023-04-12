@@ -1,8 +1,10 @@
 package br.edu.iff.jogoforca.dominio.rodada;
 
 import br.edu.iff.bancodepalavras.dominio.letra.Letra;
+import br.edu.iff.bancodepalavras.dominio.letra.LetraFactory;
 import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
 import br.edu.iff.dominio.ObjetoDominioImpl;
+import br.edu.iff.jogoforca.Aplicacao;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,20 +75,27 @@ public class Item extends ObjetoDominioImpl {
     
     public void exibir(Object context){
         List<Letra> letras = this.palavra.getLetras();
-        for (Letra l : letras){
-            l.equals(context);
+        int i = 0;
+        for (Letra letra : letras){
+            if (posicoesDescobertas.get(i)){
+                letra.exibir(context);
+            }else{
+                palavra.getLetraFactory().getLetraEncoberta().exibir(context);
+            }
+            i++;
         }       
     }
     
-    List<Integer> tentar(char codigo){
-        List<Integer> posicoesNaPalavra = new ArrayList<>();
+    boolean tentar(char codigo){
+        boolean acertou = Boolean.FALSE;
         for (int i = 0; i < palavra.getTamanho(); i++){
-            if (palavra.getLetra(i).equals(codigo)){
-                posicoesNaPalavra.add(i);
-                this.posicoesDescobertas.set(i, true);
+            Letra letra = Aplicacao.getSoleInstance().getLetraFactory().getLetra(codigo);
+            if (palavra.getLetra(i).equals(letra)){
+                acertou = Boolean.TRUE;
+                this.posicoesDescobertas.set(i, Boolean.TRUE);
             }
         }
-        return posicoesNaPalavra;
+        return acertou;
     }
     
     void arriscar(String palavra){
