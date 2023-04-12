@@ -118,7 +118,9 @@ public class Rodada extends ObjetoDominioImpl {
     }
 
     public void tentar(char codigo) {
-        if (!this.encerrou()) {
+        Letra letraPalpite = Palavra.getLetraFactory().getLetra(codigo);
+        if (!this.encerrou() && !this.erradas.contains(letraPalpite)) {
+            
             boolean errada = Boolean.TRUE;
             for (Item item : this.itens) {
                 if (item.tentar(codigo)) {
@@ -126,7 +128,7 @@ public class Rodada extends ObjetoDominioImpl {
                 }
             }
             if (errada) {
-                this.erradas.add(Palavra.getLetraFactory().getLetra(codigo));
+                this.erradas.add(letraPalpite);
             }
         }
         if (this.encerrou()) {

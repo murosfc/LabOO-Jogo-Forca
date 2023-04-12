@@ -1,6 +1,5 @@
 package br.edu.iff;
 
-import br.edu.iff.bancodepalavras.dominio.letra.Letra;
 import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraAppService;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraFactory;
@@ -60,7 +59,7 @@ public class JogoDaForca {
                     jogarNovamente = Boolean.FALSE;
                 }
                 jogarNovamente = jogarNovamente();
-                primeiraRodada = Boolean.FALSE; 
+                primeiraRodada = Boolean.FALSE;
             } else {
                 novaRodada();
                 jogarNovamente = jogarNovamente();
@@ -90,16 +89,6 @@ public class JogoDaForca {
         }
         return opcao.equals("1");
     }
-
-    static void telaFimDeJogo() {
-        System.out.println("\n\nObrigado por ter jogado o jogo da forca");
-        System.out.println("Implementado por Bruno, Felipe Muros e Rafael Panisset");
-        System.out.println("Desenhado e supervisionado pelo professor Mark Douglas");
-        System.out.println("Curso Bacharel em Sistemas de Informação");
-        System.out.println("Instituto Federal Fluminense, campus Centro - Campos dos Goytacazes - RJ");
-        System.out.println("Abril de 2023\n\n");
-    }
-
     static void telaJogo(Jogador jogador, Rodada rodada) {
         System.out.println("\nOlá " + jogador.getNome());
         System.out.println("Considere letras sem acento, e sem caracteres exclusivos do português do Brasil");
@@ -130,10 +119,10 @@ public class JogoDaForca {
                     while (!Character.isLetter(codigo)) { //garante atendimento do contrato
                         System.out.print("Digite a letra do seu palpite: ");
                         codigo = scanner.next().charAt(0);
-                        if (codigo >= 'A' && codigo <= 'Z' || codigo >= 'À' && codigo <= 'Ý') { //Se a letra é maiúscula, converte para minuscula somando 32
+                        if (codigo >= 'A' && codigo <= 'Z' || codigo >= 'À' && codigo <= 'Ý') { //Se a letra dgitada for maiúscula, converte para minúscula somando 32
                             codigo = (char) (codigo + 32);
                         }
-                    }
+                    }                   
                     rodada.tentar(codigo);
                     if (erros == rodada.getQuantidadeErros()) {
                         System.out.print("\nSeu palpite da letra '" + codigo + "' foi certeiro!\n");
@@ -175,23 +164,22 @@ public class JogoDaForca {
 
     static void encerrou(Rodada rodada) {
         if (rodada.descobriu()) {
-            System.out.println("\nParabéns, você descobriu todas as palavras!");
-            rodada.exibirPalavras(null);
-            mostrarPontuacao(rodada);
+            imprimeResultadoRodada(rodada, true);
         } else if (rodada.arriscou()) {
-            System.out.println("\nPoxa. Que pena! Você não acertou todas as palavras");
-            System.out.println("\nA(s) palavra(s) corretas era(m): ");
-            rodada.exibirPalavras(null);
-            mostrarPontuacao(rodada);
+            imprimeResultadoRodada(rodada, false);
         } else if (rodada.getQuantidadeTentativasRestantes() == 0) {
-            System.out.println("\nPoxa. Que pena! Suas tentativas acabaram");
-            System.out.println("\nA(s) palavra(s) corretas era(m): ");
-            rodada.exibirPalavras(null);
-            mostrarPontuacao(rodada);
+            imprimeResultadoRodada(rodada, false);
         }
     }
 
-    static void mostrarPontuacao(Rodada rodada) {
+    static void imprimeResultadoRodada(Rodada rodada, boolean sucesso) {
+        if (sucesso) {
+            System.out.println("\nParabéns, você descobriu todas as palavras!");
+        } else {
+            System.out.println("\nPoxa. Que pena! Você não acertou todas as palavras");
+            System.out.println("\nA(s) palavra(s) correta(s) era(m): ");
+        }
+        rodada.exibirPalavras(null);
         System.out.println("\nSua pontuação nessa rodada foi: " + rodada.calcularPontos());
         System.out.println("Sua pontuação total é: " + jogador.getPontuacao());
     }
@@ -221,7 +209,6 @@ public class JogoDaForca {
             System.out.println("\nESCOLHA UMA DAS OPÇÕES ABAIXO:\n");
             System.out.println("(1) Novo Jogo ");
             System.out.println("(0) Sair ");
-
             if (scanner.hasNextInt()) {
                 opcao = scanner.next();
             }
@@ -232,5 +219,14 @@ public class JogoDaForca {
             jogador = app.getJogadorFactory().getJogador(nome);
         }
         return opcao.equals("1");
+    }
+    
+     static void telaFimDeJogo() {
+        System.out.println("\n\nObrigado por ter jogado o jogo da forca");
+        System.out.println("Implementado por Bruno Alves, Felipe Muros e Rafael Panisset");
+        System.out.println("Desenhado e supervisionado pelo professor Mark Douglas");
+        System.out.println("Curso Bacharel em Sistemas de Informação");
+        System.out.println("Instituto Federal Fluminense, campus Centro - Campos dos Goytacazes - RJ");
+        System.out.println("Abril de 2023\n");
     }
 }
