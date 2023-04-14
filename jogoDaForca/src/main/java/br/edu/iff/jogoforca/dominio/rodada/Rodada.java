@@ -151,9 +151,10 @@ public class Rodada extends ObjetoDominioImpl {
     }
 
     public void exibirItens(Object contexto) {
+        char espaco = ' ';
         for (Item item : this.itens) {
-            item.exibir(contexto);
-            System.out.printf(" "); //O método criar letra é protected, ao usar o getLetra estouramos o tamanho do pool, então a impressão do espaço foi forçada
+            item.exibir(contexto);            
+            item.getPalavra().getLetraFactory().getLetra(espaco).exibir(contexto);            
         }
     }
 
@@ -161,10 +162,11 @@ public class Rodada extends ObjetoDominioImpl {
         getBonecoFactory().getBoneco().exibir(contexto, this.getQuantidadeErros());
     }
 
-    public void exibirPalavras(Object contexto) {        
+    public void exibirPalavras(Object contexto) {
+        char espaco = ' ';        
         for (Item item : this.itens) {
             item.getPalavra().exibir(contexto);
-            System.out.printf(" ");
+            item.getPalavra().getLetraFactory().getLetra(espaco).exibir(contexto);  
         }
     }
 

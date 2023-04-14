@@ -13,14 +13,16 @@ public abstract class LetraFactoryImpl implements LetraFactory {
 
     @Override
     public final Letra getLetra(char codigo) {
-        codigo = Character.toLowerCase(codigo);
-        int i = codigo - 'a';       
-        Letra letra = this.pool[i];
-        if (letra == null) {
-            letra = this.criarLetra(codigo);
-            this.pool[i] = letra;
-        }
-        return letra;
+        if(Character.isLetter(codigo)){
+            codigo = Character.toLowerCase(codigo);
+            int i = codigo - 'a';       
+            Letra letra = this.pool[i];
+            if (letra == null) {
+                letra = this.criarLetra(codigo);
+                this.pool[i] = letra;
+            }
+            return letra;
+        }else return this.criarLetra(codigo);        
     }
 
     @Override

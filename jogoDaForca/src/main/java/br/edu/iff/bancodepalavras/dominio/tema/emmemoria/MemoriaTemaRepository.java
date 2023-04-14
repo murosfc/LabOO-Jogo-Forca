@@ -4,15 +4,17 @@ import br.edu.iff.bancodepalavras.dominio.tema.Tema;
 import br.edu.iff.bancodepalavras.dominio.tema.TemaRepository;
 import br.edu.iff.repository.RepositoryException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class MemoriaTemaRepository implements TemaRepository {
 
     private static MemoriaTemaRepository soleInstance = null;
-    private List<Tema> pool;
-
+    private HashMap<Long, Tema> pool;
+    
     private MemoriaTemaRepository() {
-        this.pool = new ArrayList<>();
+        this.pool = new HashMap<>();
     }
 
     public static MemoriaTemaRepository getSoleInstance() {
@@ -22,17 +24,14 @@ public class MemoriaTemaRepository implements TemaRepository {
     
     @Override
     public Tema getPorId(Long id) {      
-        for (Tema tema : pool){
-            if(tema.getId() == id)
-                return tema;
-        }
-        return null; 
+        return this.pool.get(id);
     }
     
     @Override
     public List<Tema> getPorNome(String nome) {
-        List<Tema> temaBuscado = new ArrayList<>();
-        for (Tema tema : pool){
+        List<Tema> temasdisponiveis =  new ArrayList<Tema>(this.pool.values());
+        List<Tema> temaBuscado =  new ArrayList<>();
+        for (Tema tema : temasdisponiveis){
             if(tema.getNome().equalsIgnoreCase(nome))
                 temaBuscado.add(tema);
         }
@@ -41,31 +40,31 @@ public class MemoriaTemaRepository implements TemaRepository {
 
     @Override
     public List<Tema> getTodos() {
-        return this.pool;
+        return Collections.unmodifiableList(new ArrayList<Tema>(pool.values()));
     }
 
     @Override
     public void inserir(Tema tema) throws RepositoryException {
-        if (pool.contains(tema)){
+        if (this.pool.containsKey(tema.getId()) || this.pool.containsValue(tema)){
             throw new RepositoryException("Este tema já existe no banco");
         }
-        this.pool.add(tema);
+        this.pool.put(tema.getId(), tema);
     }
 
     @Override
     public void atualizar(Tema tema) throws RepositoryException {
-         if (pool.contains(tema)){
-            throw new RepositoryException("Não houve atualização do tema");
+         if (!this.pool.containsKey(tema.getId())){
+            throw new RepositoryException("Tema não existe no repositório");
         }
-        this.pool.add(tema);
+        this.pool.replace(tema.getId(), tema);
     }
 
     @Override
     public void remover(Tema tema) throws RepositoryException {
-        if (!pool.contains(tema)){
-            throw new RepositoryException("Este tema não existe no banco");
+        if (!this.pool.containsKey(tema.getId())){
+            throw new RepositoryException("Tema não existe no repositório");
         }
-        this.pool.remove(tema);
+        this.pool.remove(tema.getId());
     }
 
     @Override
