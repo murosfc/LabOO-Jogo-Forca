@@ -1,6 +1,5 @@
 package br.edu.iff.jogoforca.dominio.rodada.emmemoria;
 
-import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
 import br.edu.iff.jogoforca.dominio.jogador.Jogador;
 import br.edu.iff.jogoforca.dominio.rodada.Rodada;
 import br.edu.iff.jogoforca.dominio.rodada.RodadaRepository;
@@ -8,7 +7,6 @@ import br.edu.iff.repository.RepositoryException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MemoriaRodadaRepository implements RodadaRepository {
 

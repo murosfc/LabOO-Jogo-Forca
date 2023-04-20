@@ -11,9 +11,12 @@ public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory 
         if (soleInstance == null) {
             soleInstance = new PalavraFactoryImpl(repository);
         }
-    }
+    }    
     
     public static PalavraFactoryImpl getSoleInstance() {
+        if (soleInstance == null){
+            throw new RuntimeException("PalavraFactoryImpl não inicializado");
+        }
         return soleInstance;
     }
 
@@ -25,9 +28,9 @@ public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory 
         return (PalavraRepository) this.getRepository();
     }
  
+    @Override
     public Palavra getPalavra(String palavra, Tema tema) {
         long id = getPalavraRepository().getProximoId();       
-        Palavra p = new Palavra(id, palavra, tema);        
-        return p;
+        return new Palavra(id, palavra, tema);   
     }
 }

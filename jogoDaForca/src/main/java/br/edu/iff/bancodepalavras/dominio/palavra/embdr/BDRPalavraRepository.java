@@ -14,11 +14,8 @@ public class BDRPalavraRepository implements PalavraRepository {
         // construtor privado para implementar o Singleton
     }
 
-    public static BDRPalavraRepository getSoleInstance() {
-        if (soleInstance == null) {
-            soleInstance = new BDRPalavraRepository();
-        }
-        return soleInstance;
+    public static BDRPalavraRepository getSoleInstance() {        
+        return soleInstance == null ? soleInstance = new BDRPalavraRepository(): soleInstance;
     }
 
     @Override

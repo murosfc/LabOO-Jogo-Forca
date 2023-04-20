@@ -9,7 +9,7 @@ public abstract class RodadaFactoryImpl extends EntityFactory implements RodadaF
     private TemaRepository temaRepository;
     private PalavraRepository palavraRepository;
 
-    public RodadaFactoryImpl(RodadaRepository rodadaRepository, TemaRepository temaRepository, PalavraRepository palavraRepository) {
+    protected RodadaFactoryImpl(RodadaRepository rodadaRepository, TemaRepository temaRepository, PalavraRepository palavraRepository) {
         super(rodadaRepository);        
         this.temaRepository = temaRepository;
         this.palavraRepository = palavraRepository;

@@ -9,10 +9,8 @@ public class BonecoImagemFactory implements BonecoFactory{
     private BonecoImagemFactory() {
     }
 
-    public static BonecoImagemFactory getSoleInstance() {
-        if (soleInstance == null)
-            soleInstance = new BonecoImagemFactory();
-        return soleInstance;
+    public static BonecoImagemFactory getSoleInstance() {        
+        return soleInstance == null ? soleInstance = new BonecoImagemFactory() :soleInstance;
     }
 
     @Override

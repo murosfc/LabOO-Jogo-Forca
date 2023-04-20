@@ -11,7 +11,7 @@ public class Palavra extends ObjetoDominioImpl {
 
     private static LetraFactory letraFactory;
     private List<Letra> letras;
-    private Tema pertence;
+    private Tema pertence;    
     
     
     public static void setLetraFactory(LetraFactory factory) {
@@ -41,7 +41,7 @@ public class Palavra extends ObjetoDominioImpl {
         this.letras = new ArrayList<>();
         this.pertence = tema;
         for (int i = 0; i < palavra.length(); i++) {
-            this.letras.add(i, letraFactory.getLetra(palavra.charAt(i)));
+            this.letras.add(i, this.getLetraFactory().getLetra(palavra.charAt(i)));
         }
     }
     
@@ -60,7 +60,7 @@ public class Palavra extends ObjetoDominioImpl {
     }
 
     public void exibir(Object contexto, List<Boolean> posicoes) {
-        int i=0;
+        int i = 0;
         for(boolean bol : posicoes){
             if(bol){
                 this.letras.get(i).exibir(contexto);

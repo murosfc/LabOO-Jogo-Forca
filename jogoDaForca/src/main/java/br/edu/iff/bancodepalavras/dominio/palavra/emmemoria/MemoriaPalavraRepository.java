@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MemoriaPalavraRepository implements PalavraRepository {
 
-    private static MemoriaPalavraRepository soleInstance = new MemoriaPalavraRepository();
+    private static MemoriaPalavraRepository soleInstance = null;
     private HashMap<Long, Palavra> pool;
 
     private MemoriaPalavraRepository() {
@@ -19,7 +19,7 @@ public class MemoriaPalavraRepository implements PalavraRepository {
     }
 
     public static MemoriaPalavraRepository getSoleInstance() {
-        return soleInstance;
+        return soleInstance == null ? soleInstance = new MemoriaPalavraRepository() : soleInstance;
     }
 
     @Override

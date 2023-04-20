@@ -29,6 +29,6 @@ public class LetraTexto extends Letra {
 
     @Override
     public String toString() {
-        return String.valueOf(this.getCodigo());
+        return "Letra: "+ this.getCodigo();
     }
 }

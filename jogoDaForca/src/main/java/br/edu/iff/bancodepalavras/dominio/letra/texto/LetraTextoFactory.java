@@ -7,13 +7,15 @@ public class LetraTextoFactory extends LetraFactoryImpl {
 
     private static LetraTextoFactory soleInstance;
 
-    public static synchronized LetraTextoFactory getSoleInstance() {
+    public static LetraTextoFactory getSoleInstance() {
         return soleInstance == null ? soleInstance = new LetraTextoFactory() : soleInstance;
     }
-
-    @Override
+    
+    private LetraTextoFactory(){        
+    }
+    
+    @Override 
     protected Letra criarLetra(char codigo) {
         return new LetraTexto(codigo);
     }
-
 }

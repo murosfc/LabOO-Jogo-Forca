@@ -18,6 +18,7 @@ public class Jogador extends ObjetoDominioImpl {
         super(id);
         this.nome = nome;
     }
+    
     private Jogador(Long id,String nome, int pontuacao) {
         super(id);
         this.nome = nome;

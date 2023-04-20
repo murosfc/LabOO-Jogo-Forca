@@ -80,7 +80,7 @@ public class Aplicacao {
         return repositoryFactory;
     }
 
-    public String getTipoElementoGraficoFactory() {
+    private String getTipoElementoGraficoFactory() {
         return tipoElementoGraficoFactory;
     }
 
@@ -92,7 +92,7 @@ public class Aplicacao {
         return elementoGraficoFactory;
     }
 
-    public  BonecoFactory getBonecoFactory() {
+    public BonecoFactory getBonecoFactory() {
         return this.getElementoGraficoFactory();
     }
 

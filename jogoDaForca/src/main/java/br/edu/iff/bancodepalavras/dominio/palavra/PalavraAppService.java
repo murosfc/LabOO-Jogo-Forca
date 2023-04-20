@@ -6,6 +6,7 @@ import br.edu.iff.repository.RepositoryException;
 
 public class PalavraAppService {
     private static PalavraAppService soleInstance;
+    
     private final TemaRepository temaRepository;
     private final PalavraRepository palavraRepository;
     private final PalavraFactory palavraFactory;
@@ -21,6 +22,9 @@ public class PalavraAppService {
     }
     
     public static PalavraAppService getSoleInstance() {
+        if (soleInstance == null){
+            throw new RuntimeException("PalavraAppService não iniciado");
+        }
         return soleInstance;
     }
     

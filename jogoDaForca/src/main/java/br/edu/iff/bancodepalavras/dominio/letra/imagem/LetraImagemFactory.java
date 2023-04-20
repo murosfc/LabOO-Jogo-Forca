@@ -5,10 +5,13 @@ import br.edu.iff.bancodepalavras.dominio.letra.LetraFactoryImpl;
 
 public class LetraImagemFactory extends LetraFactoryImpl {
 
-    private static LetraImagemFactory soleInstance;
+    private static LetraImagemFactory soleInstance = null;
 
     public static LetraImagemFactory getSoleInstance() {
-        return soleInstance;
+        return soleInstance == null ? soleInstance = new LetraImagemFactory() : soleInstance;
+    }
+    
+    private LetraImagemFactory(){        
     }
 
     @Override

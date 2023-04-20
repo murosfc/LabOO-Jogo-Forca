@@ -47,7 +47,7 @@ public class RodadaAppService {
         return this.rodadaFactory.getRodada(jogador);
     }
 
-    public boolean salvaRodada(Rodada rodada) {
+    public boolean salvarRodada(Rodada rodada) {
         try {
             rodadaRepository.inserir(rodada);
             return true;

@@ -10,7 +10,7 @@ public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory{
     
     private JogadorFactoryImpl(JogadorRepository repository) {
         super(repository);        
-    }    
+    }  
 
     public static void createSoleInstance(JogadorRepository repository){
         if (soleInstance == null)
@@ -18,12 +18,11 @@ public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory{
     }
 
     public static JogadorFactoryImpl getSoleInstance() {
+        if (soleInstance == null){
+            throw new RuntimeException("Jogador Factory Implementation não incializada");
+        }
         return soleInstance;
-    }
-
-    public JogadorFactoryImpl(Repository repository) {
-        super(repository);
-    }    
+    }      
    
     private JogadorRepository getJogadorRepository(){
         return (JogadorRepository) this.repository;

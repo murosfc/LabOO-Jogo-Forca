@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class MemoriaJogadorRepository implements JogadorRepository {
 
-    private static MemoriaJogadorRepository soleInstance;
+    private static MemoriaJogadorRepository soleInstance = null;
 
     private HashMap<Long, Jogador> pool;
 
@@ -16,7 +16,7 @@ public class MemoriaJogadorRepository implements JogadorRepository {
     }
 
     public static MemoriaJogadorRepository getSoleInstance() {
-        return soleInstance == null ? new MemoriaJogadorRepository() : soleInstance;
+        return soleInstance == null ? soleInstance = new MemoriaJogadorRepository() : soleInstance;
     }
 
     @Override

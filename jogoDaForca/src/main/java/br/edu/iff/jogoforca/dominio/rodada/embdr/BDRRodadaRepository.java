@@ -12,10 +12,8 @@ public class BDRRodadaRepository implements RodadaRepository{
     private BDRRodadaRepository () {
     }
 
-    public static BDRRodadaRepository getSoleInstance() {
-        if (soleInstance == null)
-            soleInstance = new BDRRodadaRepository();
-        return soleInstance;
+    public static BDRRodadaRepository getSoleInstance() {       
+        return soleInstance == null ? soleInstance = new BDRRodadaRepository() : soleInstance;
     }    
 
       @Override
