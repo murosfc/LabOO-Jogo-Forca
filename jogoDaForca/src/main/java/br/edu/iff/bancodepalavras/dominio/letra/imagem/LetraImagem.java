@@ -9,6 +9,6 @@ public class LetraImagem extends Letra {
     }
 
     @Override
-    public void exibir(Object contexto) {
+    public void exibir(Object contexto) {    	
     }
 }
