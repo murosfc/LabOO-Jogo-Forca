@@ -16,7 +16,7 @@ public class LetraImagemFactory extends LetraFactoryImpl {
 
     @Override
     protected Letra criarLetra(char codigo) {
-        return null;
+        return new LetraImagem(codigo);
     }
     
 }

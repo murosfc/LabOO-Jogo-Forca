@@ -1,6 +1,7 @@
 package br.edu.iff.jogoforca.dominio.boneco.imagem;
 
 import br.edu.iff.jogoforca.dominio.boneco.Boneco;
+import br.edu.iff.tela.Painel;
 
 public class BonecoImagem implements Boneco{
     private static BonecoImagem soleInstance = null;
@@ -12,7 +13,9 @@ public class BonecoImagem implements Boneco{
     private BonecoImagem (){}
 
     @Override
-    public void exibir(Object context, int partes) {        
+    public void exibir(Object contexto, int partes) { 
+    	Painel painel = (Painel) contexto;
+    	painel.exibirBoneco(partes);
     }     
     
 }

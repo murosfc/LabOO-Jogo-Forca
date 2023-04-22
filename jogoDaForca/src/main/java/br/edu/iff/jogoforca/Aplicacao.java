@@ -26,7 +26,7 @@ public class Aplicacao {
     private static Aplicacao soleInstance = null;
 
     private String tipoRepositoryFactory = TIPOS_REPOSITORY_FACTORY[0];
-    private String tipoElementoGraficoFactory = TIPOS_ELEMENTO_GRAFICO_FACTORY[0];
+    private String tipoElementoGraficoFactory = TIPOS_ELEMENTO_GRAFICO_FACTORY[1];
     private String tipoRodadaFactory = TIPOS_RODADA_FACTORY[0];
 
     private RepositoryFactory repositoryFactory;

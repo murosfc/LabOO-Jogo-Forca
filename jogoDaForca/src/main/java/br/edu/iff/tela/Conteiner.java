@@ -8,8 +8,7 @@ public class Conteiner extends JFrame {
 	
 	public Conteiner(Painel painelJogo) {
 		this.setVisible(true);			
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		painelJogo.iniciar();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		setContentPane(painelJogo);
 		setSize(WIDTH, HEIGHT);		
 		setTitle("Jogo da forca");

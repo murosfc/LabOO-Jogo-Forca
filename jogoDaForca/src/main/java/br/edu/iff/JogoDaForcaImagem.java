@@ -1,5 +1,6 @@
 package br.edu.iff;
 
+import br.edu.iff.bancodepalavras.dominio.palavra.Palavra;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraAppService;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraFactory;
 import br.edu.iff.bancodepalavras.dominio.palavra.PalavraRepository;
@@ -15,8 +16,11 @@ import br.edu.iff.jogoforca.dominio.rodada.RodadaRepository;
 import br.edu.iff.tela.Conteiner;
 import br.edu.iff.tela.Painel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -40,6 +44,10 @@ public class JogoDaForcaImagem {
 	private static RodadaAppService rodadaAppService;
 
 	private static Jogador jogador;
+	private static Rodada rodada;
+	
+	private static Painel painelJogo;
+	private static Conteiner conteinerJogo;
 
 	public static void main(String[] args) {
 		PalavraAppService.createSoleInstance(temaRepository, palavraRepository, palavraFactory);
@@ -48,80 +56,67 @@ public class JogoDaForcaImagem {
 		palavraAppService = PalavraAppService.getSoleInstance();
 		rodadaAppService = RodadaAppService.getSoleInstance();
 
-		boolean jogarNovamente = Boolean.TRUE;
-		boolean primeiraRodada = Boolean.TRUE;
+		iniciarPalavrasETemas();
 
-		while (jogarNovamente) {
-			iniciarPalavrasETemas();
-			if (primeiraRodada) {
-				if (telaInicial()) {
-					novaRodada();
-				} else {
-					telaFimDeJogo();
-					jogarNovamente = Boolean.FALSE;
-				}
-				jogarNovamente = jogarNovamente();
-				primeiraRodada = Boolean.FALSE;
-			} else {
-				novaRodada();
-				jogarNovamente = jogarNovamente();
-			}
+		if (telaInicial()) {
+			novaRodada();
+		} else {
+			telaFimDeJogo();
+
 		}
-		telaFimDeJogo();
 	}
 
 	static void novaRodada() {
 		try {
-			Rodada rodada = rodadaAppService.novaRodada(jogador);
-			telaJogo(jogador, rodada);
+			rodada = rodadaAppService.novaRodada(jogador);
+			telaJogo();
 		} catch (JogadorNaoEncontradoException e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
-	static boolean jogarNovamente() {
+	static void jogarNovamente() {
 		int opcao = 2;
 		while (opcao != 0 && opcao != 1) {
 			opcao = JOptionPane.showOptionDialog(null, "O que você deseja fazer?", "Menu", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Jogar novamente", "Sair" }, "Jogar novamente");
-		}		
-		return opcao == 0;
+		}
+		conteinerJogo.dispose();
+		if( opcao == 0)
+			novaRodada();
+		else telaFimDeJogo();
 	}
 
-	static void telaJogo(Jogador jogador, Rodada rodada) {		
-		Painel painelJogo = new Painel();
-		painelJogo.setNomeJogadorAtual(jogador.getNome());
-		painelJogo.setTemaAtual(rodada.getTema().getNome());
-		painelJogo.setQuantidadeDePalavras(rodada.getNumPalavras());
-		painelJogo.setTotalErros(rodada.getQuantidadeErros());
-		painelJogo.setMaxErros(Rodada.getMaxErros());
-		Conteiner conteinerJogo = new Conteiner(painelJogo);
+	static void telaJogo() {
+		painelJogo = new Painel();
+		conteinerJogo = new Conteiner(painelJogo);
+		painelJogo.iniciar(jogador, rodada);
 		conteinerJogo.repaint();
-		while (!rodada.encerrou()) {
-			
-		}
-	}	
+	}
 
-	static void encerrou(Rodada rodada) {
+	static void encerrou() {
 		if (rodada.descobriu()) {
-			imprimeResultadoRodada(rodada, true);
+			imprimeResultadoRodada(true);
 		} else if (rodada.arriscou()) {
-			imprimeResultadoRodada(rodada, false);
+			imprimeResultadoRodada(false);
 		} else if (rodada.getQuantidadeTentativasRestantes() == 0) {
-			imprimeResultadoRodada(rodada, false);
+			imprimeResultadoRodada(false);
 		}
 	}
 
-	static void imprimeResultadoRodada(Rodada rodada, boolean sucesso) {
+	static void imprimeResultadoRodada(boolean sucesso) {
+		painelJogo.limparPalavras();
+		rodada.exibirPalavras(painelJogo);
+		String mensagemFinal = "";
 		if (sucesso) {
-			System.out.println("\nParabéns, você descobriu todas as palavras!");
+			mensagemFinal += "Parabéns, você descobriu todas as palavras!";
 		} else {
-			System.out.println("\nPoxa. Que pena! Você não acertou todas as palavras");
-			System.out.println("\nA(s) palavra(s) correta(s) era(m): ");
+			mensagemFinal += "Poxa. Que pena! Você não acertou todas as palavras";			
 		}
-		rodada.exibirPalavras(null);
-		System.out.println("\nSua pontuação nessa rodada foi: " + rodada.calcularPontos());
-		System.out.println("Sua pontuação total é: " + jogador.getPontuacao());
+		mensagemFinal += "\nSua pontuação nessa rodada foi: " + rodada.calcularPontos();
+		mensagemFinal += "\nSua pontuação total é: " + jogador.getPontuacao();
+		JOptionPane.showMessageDialog(null, mensagemFinal, "Resultados", JOptionPane.INFORMATION_MESSAGE);
+		jogarNovamente();
 	}
 
 	static void iniciarPalavrasETemas() {
@@ -145,20 +140,48 @@ public class JogoDaForcaImagem {
 		while (opcao != 0 && opcao != 1) {
 			opcao = JOptionPane.showOptionDialog(null, "O que você deseja fazer?", "Menu", JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Novo Jogo", "Sair" }, "Novo Jogo");
-		}		
-		if (opcao == 0) {			
+		}
+		if (opcao == 0) {
 			String nomeJogador = JOptionPane.showInputDialog("Digite seu nome de jogador:");
 			if (nomeJogador == null) {
 				return false;
-			}else if (nomeJogador.isEmpty()) {
+			} else if (nomeJogador.isEmpty()) {
 				nomeJogador = "Jogador";
-			}			
+			}
 			jogador = app.getJogadorFactory().getJogador(nomeJogador);
 		}
 		return opcao == 0;
 	}
 
+	public static int arriscarLetra(char codigo) {
+		if (Character.isLetter(codigo)) { //Garante atendimento do contrato
+			if (codigo >= 'A' && codigo <= 'Z' || codigo >= 'À' && codigo <= 'Ý') { // Se a letra dgitada for maiúscula, converte para minúscula somando 32																					
+				codigo = (char) (codigo + 32);
+			}
+			rodada.tentar(codigo);
+			rodada.exibirLetrasErradas(painelJogo);
+			rodada.exibirBoneco(painelJogo);
+			encerrou();
+			return rodada.getQuantidadeErros();			
+		}
+		return rodada.getQuantidadeErros();
+	}
+	
+	public static void assiscarPalavra(List<String> palavrasEmString) {
+		List<Palavra> palavras = new ArrayList<>();
+		for(String p: palavrasEmString) {
+			palavras.add(palavraFactory.getPalavra(p, rodada.getTema()));
+		}
+		rodada.arriscar(palavras);		
+		encerrou();
+	}
+	
+	public static void exibirItens() {
+		rodada.exibirItens(painelJogo);
+	}
+
 	static void telaFimDeJogo() {
+		conteinerJogo.dispose();
 		String outputs = "\n\nObrigado por ter jogado o jogo da forca\n";
 		outputs += "Implementado por Bruno Alves, Felipe Muros e Rafael Panisset\n";
 		outputs += "Desenhado e supervisionado pelo professor Mark Douglas\n";

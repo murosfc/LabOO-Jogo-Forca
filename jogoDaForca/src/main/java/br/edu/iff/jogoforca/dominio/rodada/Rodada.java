@@ -166,16 +166,20 @@ public class Rodada extends ObjetoDominioImpl {
         char espaco = ' ';        
         for (Item item : this.itens) {
             item.getPalavra().exibir(contexto);
-            item.getPalavra().getLetraFactory().getLetra(espaco).exibir(contexto);  
+            Palavra.getLetraFactory().getLetra(espaco).exibir(contexto);  
         }
     }
 
     public void exibirLetrasErradas(Object contexto) {
         int i = 0;
+        char virgula= ','; 
+        char espaco = ' '; 
         for (Letra l : this.erradas) {
             l.exibir(contexto);
-            if(i<this.erradas.size()-1)
-                System.out.printf(", ");
+            if(i < this.erradas.size()-1) {				
+				Palavra.getLetraFactory().getLetra(virgula).exibir(contexto);
+				Palavra.getLetraFactory().getLetra(espaco).exibir(contexto);
+			}
             i++;
         }
     }
